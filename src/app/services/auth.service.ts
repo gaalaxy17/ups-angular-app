@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { NotifierService } from 'angular-notifier';
+import { Router } from '@angular/router';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'user';
@@ -18,7 +19,8 @@ export class AuthService {
 
     constructor(
         private httpClient: HttpClient,
-        private notifierService: NotifierService
+        private notifierService: NotifierService,
+        private router: Router
     ) {
         this.notifier = notifierService;
 
@@ -46,14 +48,24 @@ export class AuthService {
 
                     if (!res.hasError) {
                         var user = res.data;
+                        console.log(user);
                         localStorage.setItem(USER_KEY, JSON.stringify(user));
                         this.isAuthenticated = true;
                         return user;
                     }
                     else {
                         // alert(res.erro);
-                        this.notifier.notify("error", res.erro);
-                        throw throwError(new Error(res.error));
+
+                        if (Object.entries(res.erro).length != 0) {
+                            this.notifier.notify("error", res.erro);
+                            throw throwError(new Error(res.error));
+                        }
+                        else{
+                            this.notifier.notify("error", "Ocorreu um erro inesperado, favor tentar novamente em alguns instantes.");
+                            throw throwError(new Error(res.error));
+                        }
+
+
                     }
 
 
@@ -63,10 +75,7 @@ export class AuthService {
 
     logout() {
         localStorage.clear();
-    }
-
-    showNotification() {
-
+        this.router.navigateByUrl("/login");
     }
 
     getUserAsObservable(): Observable<any> {
@@ -80,7 +89,7 @@ export class AuthService {
                 resolve(key);
             }
             else {
-                reject("Erro");
+                resolve(null);
             }
         })
     }

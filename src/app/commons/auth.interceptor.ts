@@ -3,6 +3,7 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Observable, throwError } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { environment } from 'environments/environment';
 
 
 @Injectable({
@@ -18,14 +19,14 @@ export class AuthInterceptor implements HttpInterceptor {
 
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (this.authService.isAuthenticated) {
+
             return this.authService.getUserAsObservable()
                 .pipe(
                     mergeMap((user: any) => {
-                        if (user && user.token) {
+                        if (user && user.dsToken && req.url.split('/')[2] == environment.API_ENDPOINT.split('/')[2]) {
                             req = req.clone({
                                 setHeaders: {
-                                    Authorization: 'Bearer ' + `${user.token}`
+                                    Authorization: `${user.dsToken}`
                                 }
                             });
                         }
@@ -35,7 +36,6 @@ export class AuthInterceptor implements HttpInterceptor {
                 ).pipe(
                     catchError((error: HttpErrorResponse) => {
                         let errorMessage = '';
-
                         if (error.error instanceof ErrorEvent) {
                             // client-side error
                             errorMessage = `Error: ${error.error.message}`;
@@ -50,10 +50,7 @@ export class AuthInterceptor implements HttpInterceptor {
                     })
                 )
                 ;
-        }
-        else{
-            return next.handle(req);
-        }
+        
 
     }
 

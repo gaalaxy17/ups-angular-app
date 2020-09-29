@@ -30,16 +30,25 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-   
+
 
     // get return url from route parameters or default to '/'
 
   }
 
   // convenience getter for easy access to form fields
-  login(){
-    this.authService.login(this.form.dsUser, this.form.dsPass).subscribe((results)=>{
+  login() {
+    this.submitted = true;
+    this.authService.login(this.form.dsUser, this.form.dsPass).subscribe((results) => {
       this.router.navigateByUrl("/dashboard");
     })
+
+  }
+
+  limpar() {
+    this.form = {
+      dsUser: null,
+      dsPass: null
+    }
   }
 }

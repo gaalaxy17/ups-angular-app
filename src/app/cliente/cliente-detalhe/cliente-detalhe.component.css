@@ -1,0 +1,29 @@
+.btn-theme{
+    background-color: #2f353b; 
+    color: white;
+    border-color: #2f353b;
+  }
+  
+  .btn-theme:hover{
+    background-color: #24292e;  
+    color: white;
+    border-color: #24292e;
+  }
+
+  .btn-theme:enabled{
+    background-color: #24292e;  
+    color: white;
+    border-color: #24292e;
+  }
+  
+  .btn-theme-secondary{
+    background-color: #3f4f5a;
+    border-color: #3f4f5a;
+    color: white;
+  }
+  
+  .btn-theme-secondary:hover{
+    background-color: #415461;
+    border-color: #415461;
+    color: white;
+  }

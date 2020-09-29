@@ -1,0 +1,414 @@
+<style>
+    input::-webkit-input-placeholder {
+        color: black;
+        /*Change the placeholder color*/
+        opacity: 0.5;
+        /*Change the opacity between 0 and 1*/
+    }
+
+    .modal-backdrop {
+        z-index: 2;
+    }
+
+    .darken-bkg {
+        display: none;
+        position: fixed;
+        width: 100%;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: rgba(120, 120, 120, 0.40);
+        z-index: 8000;
+    }
+</style>
+
+<div class="darken-bkg" style="display: none;"></div>
+
+<body>
+
+    <button class="btn btn-fill btn-theme" [routerLink]="['/cliente/consulta']"
+        style="margin-top:12px; margin-left: 15px; margin-bottom: -10px;"><i class="icon-arrow-left"></i>
+        Voltar</button>
+
+
+
+    <!-- breaking change 'cui-breadcrumb' -->
+    <!-- deprecation warning for 'app-breadcrumb' -->
+    <!--<ol class="breadcrumb">-->
+    <!--<app-breadcrumb></app-breadcrumb>-->
+    <!--&lt;!&ndash; Breadcrumb Menu&ndash;&gt;-->
+    <!--<li class="breadcrumb-menu d-md-down-none">-->
+    <!--<div class="btn-group" role="group" aria-label="Button group with nested dropdown">-->
+    <!--<a class="btn" href="#"><i class="icon-speech"></i></a>-->
+    <!--<a class="btn" [routerLink]="['/dashboard']"><i class="icon-graph"></i> &nbsp;Dashboard</a>-->
+    <!--<a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a>-->
+    <!--</div>-->
+    <!--</li>-->
+    <!--</ol>-->
+    <div class="container-fluid" style="padding: 0 !important">
+        <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 25px;">
+            <div class="card" style="border: none;">
+                <div class="card-body" style="padding: 0;">
+                    <div class="col-sm-12 col-md-12 col-lg-12" style="padding: 0;">
+                        <div class="card">
+                            <div class="card-body">
+                                <form style="padding: 30px;">
+                                    <input type="hidden">
+                                    <div class="row">
+                                        <div class="form-group col-lg-12 col-md-12 col-sm-12">
+                                            <label for="company">Nome da Empresa <span
+                                                    style="color:red">*</span></label>
+                                            <input type="text" class="form-control" name="nmEmpresa"
+                                                [(ngModel)]="form.nmEmpresa" placeholder="Digite o nome da empresa"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                                            <label for="vat">CNPJ <span style="color:red">*</span></label>
+                                            <input type="text" class="form-control" [dropSpecialCharacters]="false"
+                                                [(ngModel)]="form.nrCnpj" mask='00.000.000/0000-00' name="nrCnpj"
+                                                id="vat" placeholder="Digite o número do CNPJ">
+                                        </div>
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                                            <label for="street">Inscrição Estadual</label>
+                                            <input type="text" class="form-control" name="nrIe"
+                                                [dropSpecialCharacters]="false" mask='000.000.000.000'
+                                                [(ngModel)]="form.nrInscricaoEstadual"
+                                                placeholder="Digite o número da Inscrição Estadual">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-2 col-md-2 col-sm-12">
+                                            <label for="company">CEP <span style="color:red">*</span></label>
+                                            <input type="text" class="form-control" name="nrCep"
+                                                [dropSpecialCharacters]="true" mask='00000-000'
+                                                (blur)="carregarEnderecoEmpresaByCep()" [(ngModel)]="form.nrCep"
+                                                placeholder="Digite o CEP da empresa" required>
+                                        </div>
+                                        <div class="form-group col-lg-8 col-md-8 col-sm-12">
+                                            <label for="company">Endereço <span style="color:red">*</span></label>
+                                            <input type="text" class="form-control" name="nmRua"
+                                                [(ngModel)]="form.nmRua" placeholder="Digite o endereço da empresa"
+                                                required>
+                                        </div>
+                                        <div class="form-group col-lg-2 col-md-2 col-sm-12">
+                                            <label for="company">Número <span style="color:red">*</span></label>
+                                            <input type="text" class="form-control" name="nrNumero"
+                                                [(ngModel)]="form.nrNumero" placeholder="Digite o número da empresa"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                                            <label for="company">Complemento </label>
+                                            <input type="text" class="form-control" name="dsComplemento"
+                                                [(ngModel)]="form.dsComplemento" placeholder="Digite o complemento"
+                                                required>
+                                        </div>
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                                            <label for="company">Bairro </label>
+                                            <input type="text" class="form-control" name="nmBairro"
+                                                [(ngModel)]="form.nmBairro" placeholder="Digite o bairro" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                                            <label for="street">Cidade <span style="color:red">*</span></label>
+                                            <input type="text" class="form-control" name="nmCidade"
+                                                [(ngModel)]="form.nmCidade" placeholder="Digite a cidade" required>
+                                        </div>
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                                            <label for="vat">Estado <span style="color:red">*</span></label>
+                                            <input type="text" class="form-control" name="nmEstado"
+                                                [(ngModel)]="form.nmEstado" placeholder="Digite o estado" required>
+                                        </div>
+
+                                    </div>
+                                    <hr>
+                                    <button title="Editar" style="float: right;"
+                                        (click)="addUnidade()" data-target="#modalDetalheUnidade"
+                                        data-toggle="modal" class="btn btn-fill btn-info btn-simple btn-md">
+                                        Novo
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                    <h4>Unidades</h4>
+                                    <br>
+                                    <div class="content table-responsive table-full-width">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Unidade</th>
+                                                    <th>Endereço</th>
+                                                    <th>Contato</th>
+                                                    <th>Telefone</th>
+                                                    <th>Contrato</th>
+                                                    <th></th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr *ngFor="let u of form.unidades">
+                                                    <td>{{u.nmUnidade}}</td>
+                                                    <td><button type="button" class="btn btn-fill btn-theme"
+                                                            data-toggle="modal" (click)="openModalDetalheEndereco()"
+                                                            data-target="#modalDetalheEndereco">
+                                                            Detalhar
+                                                        </button>
+                                                    </td>
+                                                    <td>{{u.nmContatoCli}}</td>
+                                                    <td>{{u.nrTelefone}}</td>
+                                                    <td class="td-actions text-right">
+                                                        <button rel="tooltip" title="Editar" style="margin-right: 5px;"
+                                                            (click)="editarUnidade(u)" data-target="#modalDetalheUnidade"
+                                                            data-toggle="modal"
+                                                            class="btn btn-fill btn-info btn-simple btn-md">
+                                                            Editar
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+
+                                                        <a rel="tooltip" title="Remove" (click)="removerUnidade(u)"
+                                                            class="btn btn-danger btn-fill btn-simple btn-md">
+                                                            Deletar
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <div style="color:red; margin-bottom: 8px;">Há campos obrigatórios em branco.
+                                        </div>
+
+                                        <button class="btn btn-fill btn-theme" (click)="salvar($event)"
+                                            style="margin-right: 10px;"><i class="fa fa-save"></i>&nbsp;Salvar</button>
+                                        <!-- <button class="btn btn-danger" style="margin-left: 5px;" value="0"
+                                        (click)="mudarStatusEmpresa($event)"><i
+                                            class="fa fa-close"></i>&nbsp;Inativar</button> -->
+                                        <!-- <button class="btn btn-fill btn-theme" style="margin-left: 5px;" value="1"
+                                        (click)="mudarStatusEmpresa($event)">Ativar</button> -->
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.col-->
+                </div>
+            </div>
+
+
+        </div>
+        <!--/.col-->
+    </div><!-- /.container-fluid -->
+
+    <div class="modal fade" id="modalDetalheEndereco" role="dialog" aria-labelledby="exampleModalLabel"
+        data-backdrop="false" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-detalhe-endereco-body">
+                    <div class="row">
+                        <div class="form-group col-lg-2 col-md-2 col-sm-12">
+                            <label for="company">CEP <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nrCep" [dropSpecialCharacters]="true"
+                                mask='00000-000' [(ngModel)]="form.nrCep" placeholder="Digite o CEP da empresa"
+                                required>
+                        </div>
+                        <div class="form-group col-lg-8 col-md-8 col-sm-12">
+                            <label for="company">Endereço <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nmRua" [(ngModel)]="form.nmRua"
+                                placeholder="Digite o endereço da empresa" required>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-2 col-sm-12">
+                            <label for="company">Número <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nrNumero" [(ngModel)]="form.nrNumero"
+                                placeholder="Digite o número da empresa" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="company">Complemento </label>
+                            <input type="text" class="form-control" name="dsComplemento"
+                                [(ngModel)]="form.dsComplemento" placeholder="Digite o complemento" required>
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="company">Bairro </label>
+                            <input type="text" class="form-control" name="nmBairro" [(ngModel)]="form.nmBairro"
+                                placeholder="Digite o bairro" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="street">Cidade <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nmCidade" [(ngModel)]="form.nmCidade"
+                                placeholder="Digite a cidade" required>
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="vat">Estado <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nmEstado" [(ngModel)]="form.nmEstado"
+                                placeholder="Digite o estado" required>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-fill btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-fill btn-danger">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDetalheUnidade" role="dialog" data-backdrop="false" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-lg-12 col-md-12 col-sm-12">
+                            <label for="company">Nome da Unidade <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nmEmpresa" [(ngModel)]="item.nmUnidade"
+                                placeholder="Digite o nome da empresa" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-2 col-md-2 col-sm-12">
+                            <label for="company">CEP <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nrCep" [dropSpecialCharacters]="true"
+                                mask='00000-000' (blur)="carregarEnderecoUnidadeByCep()" [(ngModel)]="item.nrCep"
+                                placeholder="Digite o CEP da empresa" required>
+                        </div>
+                        <div class="form-group col-lg-8 col-md-8 col-sm-12">
+                            <label for="company">Endereço <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nmRua" [(ngModel)]="item.nmRua"
+                                placeholder="Digite o endereço da empresa" required>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-2 col-sm-12">
+                            <label for="company">Número <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nrNumero" [(ngModel)]="item.nrNumero"
+                                placeholder="Digite o número da empresa" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="company">Complemento </label>
+                            <input type="text" class="form-control" name="dsComplemento"
+                                [(ngModel)]="item.dsComplemento" placeholder="Complemento da Unidade" required>
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="company">Bairro </label>
+                            <input type="text" class="form-control" name="nmBairro" [(ngModel)]="item.nmBairro"
+                                placeholder="Bairro da Unidade" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="street">Cidade <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nmCidade" [(ngModel)]="item.nmCidade"
+                                placeholder="Cidade da Unidade" required>
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="vat">Estado <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nmEstado" [(ngModel)]="item.nmEstado"
+                                placeholder="Estado da Unidade" required>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12 col-md-12 col-sm-12">
+                            <label for="street">Contato Cliente <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nrTelefone" [(ngModel)]="item.nmContatoCli"
+                                placeholder="Responsável Cliente" required>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="street">Telefone <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nrTelefone" [(ngModel)]="item.nrTelefone"
+                                placeholder="Telefone para Contato" [dropSpecialCharacters]="false"
+                                mask='(00) 0000-0000' required>
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="vat">Celular <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="nrCelular" [(ngModel)]="item.nrCelular"
+                                placeholder="Celular para Contato" [dropSpecialCharacters]="false"
+                                mask='(00) 00000-0000' required>
+                        </div>
+
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="checkbox col-lg-12 col-md-12 col-sm-12">
+                            <input type="checkbox" value=true [(ngModel)]="item.fgClienteContrato" id="checkbox1"
+                                data-toggle="checkbox">
+                            <label for="checkbox1">
+                                Contrato Regular?
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="street">Duração Contrato <span style="color:red">*</span></label>
+                            <input type="number" class="form-control" name="nrDuracaoContrato"
+                                [(ngModel)]="item.nrDuracaoContrato" [disabled]="!item.fgClienteContrato"
+                                placeholder="Duração do contrato (Meses)" required>
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="street">Data de início do contrato <span style="color:red">*</span></label>
+                            <mat-form-field>
+                                <mat-label>Início</mat-label>
+                                <input matInput name="dtInicioContrato" [matDatepicker]="inicioContratoPicker"
+                                    [disabled]="!item.fgClienteContrato" (click)="inicioContratoPicker.open()">
+                                <mat-datepicker-toggle matSuffix [for]="inicioContratoPicker">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #inicioContratoPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="vat">Dia Previsto <span style="color:red">*</span></label>
+                            <input type="number" class="form-control" name="nrDiaPrevisto"
+                                [(ngModel)]="item.nrDiaPrevisto" [disabled]="!item.fgClienteContrato"
+                                placeholder="Dia do mês previsto para o atendimento" required>
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                            <label for="vat">Técnico Previsto <span style="color:red">*</span></label>
+                            <select class="form-control" name="nrDiaPrevisto" [(ngModel)]="item.tecnicoPrevisto"
+                                [disabled]="!item.fgClienteContrato" placeholder="Técnico previsto para o atendimento"
+                                required>
+                                <option *ngFor="let t of tecnicos">{{t.nmUser}}</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-fill btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-fill btn-danger" (click)="salvarUnidade()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+<!-- Button trigger modal -->
+<!-- Modal -->

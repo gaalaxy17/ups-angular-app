@@ -1,0 +1,103 @@
+<style>
+    input::-webkit-input-placeholder {
+        color: black;
+        /*Change the placeholder color*/
+        opacity: 0.5;
+        /*Change the opacity between 0 and 1*/
+    }
+</style>
+<div class="container-fluid" style="padding: 0 !important">
+    <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 10px;">
+        <div class="card" style="border: none;">
+            <div class="card-body" style="padding: 0 !important;">
+                <div class="card">
+                    <div class="card-header"
+                        style="background-color: #2f353b; color: white; padding: 15px; font-size: 20px;">
+                        <b>
+                        </b>
+                    </div>
+                    <div class="card-body">
+                        <form style="padding: 25px;">
+                            <table width="100%">
+                                <thead>
+                                    <tr style="width: 100%;">
+                                        <td width="10%"></td>
+                                        <td width="70%"> </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr height="50px">
+                                        <td> <label for="company"><b>Nome da Empresa</b></label></td>
+                                        <td> <input type="text" class="form-control col-6" id="empresa"
+                                                placeholder="Digite o nome da empresa"></td>
+                                    </tr>
+                                    <tr height="50px">
+                                        <td> <label for="company"><b>CNPJ</b></label>
+                                        </td>
+                                        <td> <input type="text" class="form-control col-6" id="cnpj"
+                                                placeholder="Digite o CNPJ"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr><br>
+                            <div class="form-group">
+                                <button class="btn btn-fill btn-theme" (click)="listarEmpresas()" style="margin-right: 5px"><i
+                                        class="fa fa-search"></i>&nbsp;Buscar</button>
+                                <button class="btn btn-fill btn-theme" [routerLink]="['/cliente/detalhe']"
+                                    [queryParams]="{new: 1}"><i
+                                    class="fa fa-file"></i>&nbsp;Novo</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body" style="padding: 0;">
+                        <table class="table table-striped">
+                            <thead style="background: #24292e; color: white;">
+                                <tr>
+                                    <th style="padding: 15px; color: white;">ID</th>
+                                    <th style="padding: 15px; color: white;">Empresa</th>
+                                    <th style="padding: 15px; color: white;">CNPJ</th>
+                                    <th style="padding: 15px; color: white;">I.E</th>
+                                    <th style="padding: 15px; color: white;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    *ngFor="let empresa of empresas  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                                    <td>{{empresa.cdEmpresa}}</td>
+                                    <td>{{empresa.nmEmpresa}}</td>
+                                    <td>{{empresa.dsTipoDocumento}}</td>
+                                    <td *ngIf="empresa.dsTipoDocumento == 'CNPJ'">
+                                        <span>{{empresa.nrDocumento | mask: '00.000.000/0000-00' }}</span></td>
+                                    <td *ngIf="empresa.dsTipoDocumento == 'CEI'">
+                                        <span>{{empresa.nrDocumento | mask: '00.0000000.00-00' }}</span></td>
+                                    <td>{{empresa.dsEnquadramentoFiscal}}</td>
+                                    <td *ngIf="empresa.stStatus == 1">Ativo</td>
+                                    <td *ngIf="empresa.stStatus == 0">Inativo</td>
+                                    <td>
+                                        <button class="btn btn-theme" [routerLink]="['/empresa/detalhe']"
+                                            [queryParams]="{id: empresa.cdEmpresa}">Detalhes</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-theme-secondary" data-toggle="modal"
+                                            (click)="abrirModal(empresa.cdEmpresa, empresa.nmEmpresa)">Clique
+                                            Aqui</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <ngb-pagination style="float: right; margin-right: 25px;" [(page)]="page" [pageSize]="pageSize"
+                    [maxSize]="5" [rotate]="true" [boundaryLinks]="true">
+                </ngb-pagination>
+
+            </div>
+        </div>
+
+
+    </div>
+    <!--/.col-->
+</div><!-- /.container-fluid -->

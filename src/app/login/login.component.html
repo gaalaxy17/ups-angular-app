@@ -10,6 +10,14 @@
             margin-left: 100px;
         }
     }
+
+
+    input::-webkit-input-placeholder {
+        color: black;
+        /*Change the placeholder color*/
+        opacity: 0.5;
+        /*Change the opacity between 0 and 1*/
+    }
 </style>
 
 
@@ -23,26 +31,32 @@
                 <div style="text-align: center;">
                     <img width="300px" src="../../assets/img/logo-ups-negativo.png">
                     <!-- <form> -->
-                    <div class="form-group">
-                        <label style="float: left; color: white;" for="username">Usuário</label>
-                        <input type="text" [(ngModel)]="form.dsUser" class="form-control"
-                            [ngClass]="{ 'is-invalid': submitted && !form.dsUser }" />
-                        <div *ngIf="submitted && !form.dsUser" class="invalid-feedback">
-                            Campo obrigatório
+                    <div class="form-group" [ngClass]="{ 'has-error': submitted && !form.dsUser }">
+
+                        <div class="input-group" style="margin-bottom: 10px; margin-top: 20px;">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+
+                            <input type="text" [(ngModel)]="form.dsUser" class="form-control" placeholder="Usuário" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label style="float: left; color: white;" for="password">Senha</label>
-                        <input type="password" [(ngModel)]="form.dsPass" class="form-control"
-                            [ngClass]="{ 'is-invalid': submitted && !form.dsPass }" />
-                        <div *ngIf="submitted && !form.dsPass" class="invalid-feedback">
-                            Campo obrigatório
+                    <div class="form-group" [ngClass]="{ 'has-error': submitted && !form.dsPass }">
+                        <div class="input-group " style="margin-bottom: 15px;">
+                            <span class="input-group-addon"><i class="fa pe-7s-key"></i></span>
+
+                            <input type="password" [(ngModel)]="form.dsPass" class="form-control "
+                                placeholder="Senha" />
                         </div>
                     </div>
-                    <div class="form-group" style="float: right;">
+
+                    <div class="form-group">
                         <button (click)="login()" [disabled]="loading" class="btn btn-fill btn-danger">
                             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                             Login
+                        </button>
+                        &nbsp;
+                        <button (click)="limpar()" [disabled]="loading" class="btn btn-fill btn-secundary">
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                            Limpar
                         </button>
                     </div>
                     <!-- </form> -->

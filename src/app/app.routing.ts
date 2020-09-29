@@ -7,11 +7,11 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes =[
-  {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full',
-  }, 
+  // {
+  //   path: '',
+  //   redirectTo: 'dashboard',
+  //   pathMatch: 'full',
+  // }, 
   {
     path: 'login',
     pathMatch: 'full',
@@ -40,6 +40,7 @@ const routes: Routes =[
     })
   ],
   exports: [
+    RouterModule
   ],
 })
 export class AppRoutingModule { }

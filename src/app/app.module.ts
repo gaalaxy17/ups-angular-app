@@ -16,6 +16,10 @@ import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { CommonsModule } from './commons/commons.module';
 import { NotifierModule } from 'angular-notifier';
+import { AdminLayoutModule } from './layouts/admin-layout/admin-layout.module';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { AuthInterceptor } from './commons/auth.interceptor';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 registerLocaleData(localePt);
@@ -27,6 +31,13 @@ registerLocaleData(localePt);
     RouterModule,
     AppRoutingModule,
     FormsModule,
+    AdminLayoutModule,
+    FormsModule,
+    HttpClientModule,
+    NavbarModule,
+    FooterModule,
+    SidebarModule,
+    ReactiveFormsModule,
     NotifierModule.withConfig({
       position: {
         horizontal: {
@@ -38,13 +49,17 @@ registerLocaleData(localePt);
 
       },
       theme: "material"
-    })
+    }),
+    NgbModule
   ],
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    AdminLayoutComponent
+    
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  { provide: LOCALE_ID, useValue: 'pt-BR' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

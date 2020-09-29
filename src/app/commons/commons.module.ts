@@ -12,19 +12,11 @@ import { AuthInterceptor } from './auth.interceptor';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    NavbarModule,
-    FooterModule,
-    SidebarModule,
-    ReactiveFormsModule
+    
   ],
-  declarations: [
-    AdminLayoutComponent],
+  declarations: [],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: LOCALE_ID, useValue: 'pt-BR' }
+   
   ],
 })
 export class CommonsModule { }

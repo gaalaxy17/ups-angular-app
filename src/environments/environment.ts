@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  API_ENDPOINT: 'http://localhost:3000'
+  API_ENDPOINT: 'http://localhost:3000',
+  VIA_CEP_API_ENDPOINT: 'https://viacep.com.br/ws'
 };
