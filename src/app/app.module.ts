@@ -20,6 +20,7 @@ import { AdminLayoutModule } from './layouts/admin-layout/admin-layout.module';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthInterceptor } from './commons/auth.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 registerLocaleData(localePt);

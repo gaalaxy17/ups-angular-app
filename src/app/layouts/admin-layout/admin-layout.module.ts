@@ -18,6 +18,7 @@ import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 // export let options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -35,7 +36,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    NgbModule,
+    NgxSpinnerModule
     
   ],
   declarations: [

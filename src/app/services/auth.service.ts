@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { NotifierService } from 'angular-notifier';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'user';
@@ -20,7 +21,8 @@ export class AuthService {
     constructor(
         private httpClient: HttpClient,
         private notifierService: NotifierService,
-        private router: Router
+        private router: Router,
+        private spinner: NgxSpinnerService
     ) {
         this.notifier = notifierService;
 
@@ -33,6 +35,9 @@ export class AuthService {
 
 
     login(username, password): Observable<any> {
+
+        this.spinner.show();
+
         const body = {
             dsUser: username,
             dsPass: password
@@ -44,7 +49,8 @@ export class AuthService {
             body)
             .pipe(
                 map(res => {
-                    console.log(res);
+
+                    this.spinner.hide();
 
                     if (!res.hasError) {
                         var user = res.data;

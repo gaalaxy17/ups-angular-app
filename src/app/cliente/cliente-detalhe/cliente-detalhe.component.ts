@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NotifierService } from 'angular-notifier';
 import { ClienteService } from 'app/services/cliente.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as uuid from 'uuid';
+import { ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 // import * as $ from 'jquery';
 
 declare var $: any;
@@ -13,7 +16,12 @@ declare var $: any;
 })
 export class ClienteDetalheComponent implements OnInit {
 
+  cdCliente = null;
+
   form: any = {
+    nmEmpresa: null,
+    nrDocumento: null,
+    nrInscricaoEstadual: null,
     nrCep: null,
     nmRua: null,
     nrNumero: null,
@@ -40,8 +48,18 @@ export class ClienteDetalheComponent implements OnInit {
     nrDuracaoContrato: null,
     nrDiaPrevisto: null,
     tecnicoPrevisto: null,
-    fgAtivo: null
+    fgAtivo: true
   }
+
+  equipamento: any = {
+    dsEquipamento: null,
+    dsTipo: null,
+    fgAtivo: true
+  }
+
+  tiposEquipamento = [
+    "GMG","Nobreak"
+  ]
 
   tecnicos = [];
 
@@ -49,19 +67,26 @@ export class ClienteDetalheComponent implements OnInit {
 
   private readonly notifier: NotifierService;
 
-  constructor(public clienteService: ClienteService, public notifierService: NotifierService, public modalService: NgbModal) {
+  constructor(public clienteService: ClienteService, public notifierService: NotifierService, public modalService: NgbModal, public route:ActivatedRoute) {
     this.notifier = notifierService;
   }
 
   ngOnInit(): void {
+
     this.carregarCombos();
-    
+
+    this.route.queryParams.subscribe(params => {
+      if(params['cdCliente']){
+        this.cdCliente = params['cdCliente'];
+        this.detalhar();
+      }
+    })
+
   }
 
   carregarEnderecoEmpresaByCep() {
 
     if (this.form.nrCep) {
-
       this.clienteService.carregarEndereco(this.form.nrCep).then((results) => {
         console.log(results);
         if (results.erro) {
@@ -75,11 +100,11 @@ export class ClienteDetalheComponent implements OnInit {
             this.form.nmBairro = results.bairro;
           }
 
-          if(results.uf){
+          if (results.uf) {
             this.form.nmEstado = results.uf;
           }
 
-          if(results.localidade){
+          if (results.localidade) {
             this.form.nmCidade = results.localidade;
           }
         }
@@ -105,11 +130,11 @@ export class ClienteDetalheComponent implements OnInit {
             this.item.nmBairro = results.bairro;
           }
 
-          if(results.uf){
+          if (results.uf) {
             this.item.nmEstado = results.uf;
           }
 
-          if(results.localidade){
+          if (results.localidade) {
             this.item.nmCidade = results.localidade;
           }
         }
@@ -118,23 +143,25 @@ export class ClienteDetalheComponent implements OnInit {
     }
   }
 
-  carregarCombos(){
-    this.clienteService.carregarCombos().then((combos)=>{
+  carregarCombos() {
+    this.clienteService.carregarCombos().then((combos) => {
       console.log(combos);
       this.tecnicos = combos.tecnicos;
     })
   }
 
-  openModalDetalheEndereco(){
+  openModalDetalheEndereco() {
 
 
   }
 
-  openModalDetalheUnidade(){
-   
+  openModalDetalheUnidade() {
+
   }
 
-  addUnidade(){
+  addUnidade() {
+
+    const id = uuid.v4();
 
     this.item = {
       nmUnidade: null,
@@ -152,22 +179,116 @@ export class ClienteDetalheComponent implements OnInit {
       nrDuracaoContrato: null,
       nrDiaPrevisto: null,
       tecnicoPrevisto: null,
-      fgAtivo: null
+      fgAtivo: null,
+      equipamentos: [],
+      uuid: id
     }
-
-
 
   }
 
-  salvarUnidade(){
-    if(this.item){
-      this.form.unidades.push(this.item);
+  addEquipamento(item) {
+
+    if (item.equipamentos) {
+
+      if (this.equipamento) {
+        let equipamento = {
+          dsEquipamento: this.equipamento.dsEquipamento,
+          dsTipo: this.equipamento.dsTipo,
+          fgAtivo: this.equipamento.fgAtivo
+        }
+        item.equipamentos.push(equipamento);
+      }
+
+    }
+
+  }
+
+  salvarUnidade() {
+    if (this.item) {
+
+      if (this.form.unidades.length > 0) {
+
+        let foundItem = false;
+
+        this.form.unidades.forEach((item, i) => {
+          if (item.uuid == this.item.uuid) {
+
+            foundItem = true;
+
+            item.nmUnidade = this.item.nmUnidade;
+            item.nrCep = this.item.nrCep;
+            item.nmRua = this.item.nmRua;
+            item.nrNumero = this.item.nrNumero
+            item.dsComplemento = this.item.dsComplemento
+            item.nmBairro = this.item.nmBairro
+            item.nmEstado = this.item.nmEstado
+            item.nmCidade = this.item.nmCidade
+            item.nmContatoCli = this.item.nmContatoCli
+            item.nrTelefone = this.item.nrTelefone
+            item.nrCelular = this.item.nrCelular
+            item.fgClienteContrato = this.item.fgClienteContrato
+            item.nrDuracaoContrato = this.item.nrDuracaoContrato
+            item.nrDiaPrevisto = this.item.nrDiaPrevisto
+            item.tecnicoPrevisto = this.item.tecnicoPrevisto
+            item.fgAtivo = this.item.fgAtivo
+            item.equipamentos = this.item.equipamentos;
+          }
+
+        })
+
+        if (!foundItem) {
+          this.form.unidades.push(this.item);
+        }
+
+      } else {
+        this.form.unidades.push(this.item);
+      }
+
       $("#modalDetalheUnidade").modal("hide");
     }
   }
 
-  editarUnidade(u){
+  editarUnidade(u) {
     this.item = u;
+  }
+
+  removerUnidade(index) {
+    this.form.unidades.splice(index, 1);
+  }
+
+  removerEquipamento(item, index) {
+    item.equipamentos.splice(index, 1);
+  }
+
+  salvar() {
+    this.clienteService.salvar(this.form).then((results) => {
+
+      if(results){
+        this.form.cdEmpresa = results.cdEmpresa;
+      }
+
+      this.notifier.notify("success", "Dados salvos com sucesso.");
+    })
+  }
+
+  detalhar(){
+    this.clienteService.detalhar(this.cdCliente).then((empresa)=>{
+      this.form = empresa;
+    })
+  }
+
+  inativarUnidade(unidade){
+    this.clienteService.mudarStatusUnidade(unidade.cdUnidade,0).then((results)=>{
+      this.detalhar();
+      console.log(results);
+    })
+  }
+
+  reativarUnidade(unidade){
+    this.clienteService.mudarStatusUnidade(unidade.cdUnidade,1).then((results)=>{
+      this.detalhar();
+      console.log(results);
+    })
   }
 
 }

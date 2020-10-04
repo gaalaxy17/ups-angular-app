@@ -9,27 +9,11 @@
     .modal-backdrop {
         z-index: 2;
     }
-
-    .darken-bkg {
-        display: none;
-        position: fixed;
-        width: 100%;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        background-color: rgba(120, 120, 120, 0.40);
-        z-index: 8000;
-    }
 </style>
 
-<div class="darken-bkg" style="display: none;"></div>
+<ngx-spinner color="#ed1c24" type="line-scale" size="medium"></ngx-spinner>
 
 <body>
-
-    <button class="btn btn-fill btn-theme" [routerLink]="['/cliente/consulta']"
-        style="margin-top:12px; margin-left: 15px; margin-bottom: -10px;"><i class="icon-arrow-left"></i>
-        Voltar</button>
 
 
 
@@ -68,7 +52,7 @@
                                         <div class="form-group col-lg-6 col-md-6 col-sm-12">
                                             <label for="vat">CNPJ <span style="color:red">*</span></label>
                                             <input type="text" class="form-control" [dropSpecialCharacters]="false"
-                                                [(ngModel)]="form.nrCnpj" mask='00.000.000/0000-00' name="nrCnpj"
+                                                [(ngModel)]="form.nrDocumento" mask='00.000.000/0000-00' name="nrCnpj"
                                                 id="vat" placeholder="Digite o número do CNPJ">
                                         </div>
                                         <div class="form-group col-lg-6 col-md-6 col-sm-12">
@@ -127,9 +111,9 @@
 
                                     </div>
                                     <hr>
-                                    <button title="Editar" style="float: right;"
-                                        (click)="addUnidade()" data-target="#modalDetalheUnidade"
-                                        data-toggle="modal" class="btn btn-fill btn-info btn-simple btn-md">
+                                    <button title="Editar" style="float: right;" (click)="addUnidade()"
+                                        data-target="#modalDetalheUnidade" data-toggle="modal"
+                                        class="btn btn-fill btn-info btn-simple btn-md">
                                         Novo
                                         <i class="fa fa-edit"></i>
                                     </button>
@@ -150,29 +134,40 @@
                                             </thead>
                                             <tbody>
 
-                                                <tr *ngFor="let u of form.unidades">
-                                                    <td>{{u.nmUnidade}}</td>
-                                                    <td><button type="button" class="btn btn-fill btn-theme"
-                                                            data-toggle="modal" (click)="openModalDetalheEndereco()"
-                                                            data-target="#modalDetalheEndereco">
-                                                            Detalhar
-                                                        </button>
+                                                <tr *ngFor="let u of form.unidades; let i = index">
+                                                    <td><b>{{u.nmUnidade}}</b></td>
+                                                    <td>
+                                                        {{u.nmRua}} {{u.nrNumero}} {{u.dsComplemento}}
+                                                        <br>{{u.nmBairro}}
+                                                        <br>{{u.nmCidade}}/{{u.nmEstado}}
                                                     </td>
                                                     <td>{{u.nmContatoCli}}</td>
                                                     <td>{{u.nrTelefone}}</td>
+                                                    <td>
+                                                        <span *ngIf="u.fgClienteContrato == 0">Não</span>
+                                                        <span *ngIf="u.fgClienteContrato == 1">Sim</span>
+                                                    </td>
                                                     <td class="td-actions text-right">
                                                         <button rel="tooltip" title="Editar" style="margin-right: 5px;"
-                                                            (click)="editarUnidade(u)" data-target="#modalDetalheUnidade"
-                                                            data-toggle="modal"
+                                                            (click)="editarUnidade(u)"
+                                                            data-target="#modalDetalheUnidade" data-toggle="modal"
                                                             class="btn btn-fill btn-info btn-simple btn-md">
                                                             Editar
                                                             <i class="fa fa-edit"></i>
                                                         </button>
 
-                                                        <a rel="tooltip" title="Remove" (click)="removerUnidade(u)"
+                                                        <a rel="tooltip" title="Remove" (click)="inativarUnidade(u)"
+                                                            *ngIf="u.fgAtivo == 1"
                                                             class="btn btn-danger btn-fill btn-simple btn-md">
-                                                            Deletar
+                                                            Inativar
                                                             <i class="fa fa-trash"></i>
+                                                        </a>
+
+                                                        <a rel="tooltip" title="Remove" (click)="reativarUnidade(u)"
+                                                            *ngIf="u.fgAtivo == 0"
+                                                            class="btn btn-primary btn-fill btn-simple btn-md">
+                                                            Reativar
+                                                            <i class="fa fa-check"></i>
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -185,7 +180,9 @@
                                         </div>
 
                                         <button class="btn btn-fill btn-theme" (click)="salvar($event)"
-                                            style="margin-right: 10px;"><i class="fa fa-save"></i>&nbsp;Salvar</button>
+                                            style="margin-right: 10px;">Salvar&nbsp;<i class="fa fa-save"></i></button>
+                                        <button class="btn btn-fill btn-theme" [routerLink]="['/cliente/consulta']">
+                                            Voltar&nbsp; <i class="fa fa-arrow-left"></i></button>
                                         <!-- <button class="btn btn-danger" style="margin-left: 5px;" value="0"
                                         (click)="mudarStatusEmpresa($event)"><i
                                             class="fa fa-close"></i>&nbsp;Inativar</button> -->
@@ -269,8 +266,9 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalDetalheUnidade" role="dialog" data-backdrop="false" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
+    <div class="modal fade" id="modalDetalheUnidade" role="dialog" data-backdrop="false" aria-hidden="true"
+        style="z-index: 10;">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -278,6 +276,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <h3><b>Informações Unidade</b></h3>
                     <div class="row">
                         <div class="form-group col-lg-12 col-md-12 col-sm-12">
                             <label for="company">Nome da Unidade <span style="color:red">*</span></label>
@@ -352,6 +351,7 @@
 
                     </div>
                     <hr>
+                    <h3><b>Informações Contrato</b></h3>
                     <div class="row">
                         <div class="checkbox col-lg-12 col-md-12 col-sm-12">
                             <input type="checkbox" value=true [(ngModel)]="item.fgClienteContrato" id="checkbox1"
@@ -370,9 +370,10 @@
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-sm-12">
                             <label for="street">Data de início do contrato <span style="color:red">*</span></label>
-                            <mat-form-field>
+                            <mat-form-field style="display: block;">
                                 <mat-label>Início</mat-label>
                                 <input matInput name="dtInicioContrato" [matDatepicker]="inicioContratoPicker"
+                                [(ngModel)]="item.dtInicioContrato"
                                     [disabled]="!item.fgClienteContrato" (click)="inicioContratoPicker.open()">
                                 <mat-datepicker-toggle matSuffix [for]="inicioContratoPicker">
                                 </mat-datepicker-toggle>
@@ -390,12 +391,69 @@
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-sm-12">
                             <label for="vat">Técnico Previsto <span style="color:red">*</span></label>
-                            <select class="form-control" name="nrDiaPrevisto" [(ngModel)]="item.tecnicoPrevisto"
+                            <select class="form-control" name="nrDiaPrevisto" [(ngModel)]="item.cdTecnicoPrevisto"
                                 [disabled]="!item.fgClienteContrato" placeholder="Técnico previsto para o atendimento"
                                 required>
-                                <option *ngFor="let t of tecnicos">{{t.nmUser}}</option>
+                                <option *ngFor="let t of tecnicos" value="{{t.cdLogin}}" [selected]="item.cdTecnicoPrevisto == t.cdLogin">{{t.nmUser}}</option>
 
                             </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <h3><b>Equipamentos Contrato</b></h3>
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-12">
+                            <input type="text" class="form-control" [(ngModel)]="equipamento.dsEquipamento"
+                                style="display: inline-block;" [disabled]="!item.fgClienteContrato">
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-12">
+
+                            <select class="form-control" [(ngModel)]="equipamento.dsTipo">
+                                <option *ngFor="let tipo of tiposEquipamento" value="{{tipo}}"
+                                    selected="{{tipo == 'GMG'}}" [disabled]="!item.fgClienteContrato">{{tipo}} 
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12">
+
+                            <button title="Editar" style="float: right;" (click)="addEquipamento(item)" [disabled]="!item.fgClienteContrato"
+                                class="btn btn-fill btn-info btn-simple btn-md">
+                                Adicionar
+                                <i class="fa fa-plus"></i>
+                            </button>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="content table-responsive table-full-width"
+                                style="padding-left: 15px; padding-right: 15px;">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Tipo</th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr *ngFor="let e of item.equipamentos; let i = index">
+                                            <td>{{e.dsEquipamento}}</td>
+                                            <td>{{e.dsTipo}}</td>
+                                            <td class="td-actions text-right">
+
+                                                <a rel="tooltip" title="Remove" (click)="removerEquipamento(item,i)"
+                                                    class="btn btn-danger btn-fill btn-simple btn-md">
+                                                    Deletar
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 

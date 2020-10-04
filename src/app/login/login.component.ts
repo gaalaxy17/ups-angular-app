@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
+import { NgxMaskModule } from 'ngx-mask';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 declare var $: any;
 
@@ -38,6 +40,7 @@ export class LoginComponent implements OnInit {
 
   // convenience getter for easy access to form fields
   login() {
+
     this.submitted = true;
     this.authService.login(this.form.dsUser, this.form.dsPass).subscribe((results) => {
       this.router.navigateByUrl("/dashboard");
