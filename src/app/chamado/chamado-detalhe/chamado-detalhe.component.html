@@ -1,0 +1,222 @@
+<style>
+    input::-webkit-input-placeholder {
+        color: black;
+        /*Change the placeholder color*/
+        opacity: 0.5;
+        /*Change the opacity between 0 and 1*/
+    }
+
+    .modal-backdrop {
+        z-index: 2;
+    }
+
+    .input-error input {
+        border-color: red;
+    }
+
+    .input-error label {
+        color: red;
+    }
+</style>
+
+<ngx-spinner color="#ed1c24" type="line-scale" size="medium"></ngx-spinner>
+
+<body>
+
+
+
+    <!-- breaking change 'cui-breadcrumb' -->
+    <!-- deprecation warning for 'app-breadcrumb' -->
+    <!--<ol class="breadcrumb">-->
+    <!--<app-breadcrumb></app-breadcrumb>-->
+    <!--&lt;!&ndash; Breadcrumb Menu&ndash;&gt;-->
+    <!--<li class="breadcrumb-menu d-md-down-none">-->
+    <!--<div class="btn-group" role="group" aria-label="Button group with nested dropdown">-->
+    <!--<a class="btn" href="#"><i class="icon-speech"></i></a>-->
+    <!--<a class="btn" [routerLink]="['/dashboard']"><i class="icon-graph"></i> &nbsp;Dashboard</a>-->
+    <!--<a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a>-->
+    <!--</div>-->
+    <!--</li>-->
+    <!--</ol>-->
+    <div class="container-fluid" style="padding: 0 !important">
+        <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 25px;">
+            <div class="card" style="border: none;">
+                <div class="card-body" style="padding: 0;">
+                    <div class="col-sm-12 col-md-12 col-lg-12" style="padding: 0;">
+                        <div class="card">
+                            <div class="card-body">
+                                <form style="padding: 30px;">
+                                    <input type="hidden">
+                                    <div class="row">
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12"
+                                            [class]="{'input-error': chamadoFormSubmitted && !form.cdEmpresa}">
+                                            <mat-form-field appearance="fill" style="width: 100%;">
+                                                <mat-label>Empresa</mat-label>
+                                                <mat-select (selectionChange)="carregarUnidades()" name="cdEmpresa"
+                                                    [(ngModel)]="form.cdEmpresa">
+                                                    <mat-option *ngFor="let e of empresas" [value]="e.cdEmpresa">
+                                                        {{e.nmEmpresa}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <!-- <label for="company">Empresa<span style="color:red">*</span></label>
+                                            <select class="form-control" name="cdEmpresa" [(ngModel)]="form.cdEmpresa"
+                                                (change)="carregarUnidades()" placeholder="Empresa do chamado" required>
+                                                <option *ngFor="let e of empresas" value="{{e.cdEmpresa}}"
+                                                    [selected]="form.cdEmpresa == e.cdEmpresa">{{e.nmEmpresa}}
+                                                </option>
+
+                                            </select> -->
+                                        </div>
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12"
+                                            [class]="{'input-error': chamadoFormSubmitted && !form.cdUnidade}">
+                                            <mat-form-field appearance="fill" style="width: 100%;">
+                                                <mat-label>Unidade</mat-label>
+                                                <mat-select [(ngModel)]="form.cdUnidade" name="cdUnidade">
+                                                    <mat-option *ngFor="let u of unidades" [value]="u.cdUnidade">
+                                                        {{u.nmUnidade}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <!-- <label for="company">Unidade<span style="color:red">*</span></label>
+                                            <select class="form-control"  [(ngModel)]="form.cdUnidade" name="cdUnidade"
+                                                placeholder="Unidade do chamado" required>
+                                                <option *ngFor="let u of unidades" value="{{u.cdUnidade}}"
+                                                    [disabled]="unidades.length == 0"
+                                                    [selected]="(form.cdUnidade == u.cdUnidade) || (unidades.length == 1)">{{u.nmUnidade}}
+                                                </option>
+
+                                            </select> -->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-12 col-md-12 col-sm-12"
+                                            [class]="{'input-error': chamadoFormSubmitted && !form.cdTipoAtendimento}">
+                                            <mat-form-field appearance="fill" style="width: 100%;">
+                                                <mat-label>Tipo Chamado</mat-label>
+                                                <mat-select (selectionChange)="carregarEquipamentos()" name="cdTipoAtendimento"  [(ngModel)]="form.cdTipoAtendimento">
+                                                    <mat-option *ngFor="let t of tiposAtendimento"
+                                                        [value]="t.cdTipoAtendimento">
+                                                        {{t.dsTipoAtendimento}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <!-- <label for="company">Tipo Chamado<span style="color:red">*</span></label>
+                                            <select class="form-control" name="cdTipoAtendimento"
+                                                [(ngModel)]="form.cdTipoAtendimento" placeholder="Tipo atendimento"
+                                                required>
+                                                <option *ngFor="let ta of tiposAtendimento"
+                                                    value="{{ta.cdTipoAtendimento}}"
+                                                    [selected]="form.cdTipoAtendimento == ta.cdTipoAtendimento">
+                                                    {{ta.dsTipoAtendimento}}
+                                                </option>
+
+                                            </select> -->
+                                        </div>
+                                    </div>
+
+                                    <!-- <hr> -->
+                                    <h4>Descrição do Serviço</h4>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <textarea class="form-control" type="text"
+                                                [(ngModel)]="form.dsDescricao"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <h4>Equipamentos</h4>
+                                    <div class="row">
+                                        <div class="col-lg-5 col-md-5 col-sm-12">
+                                            <input type="text" class="form-control" name="dsEquipamento"
+                                                [(ngModel)]="equipamento.dsEquipamento" style="display: inline-block;">
+                                        </div>
+                                        <div class="col-lg-5 col-md-5 col-sm-12">
+                                            <mat-form-field style="width: 100%;">
+                                                <mat-label>Tipo</mat-label>
+                                                <mat-select [(ngModel)]="equipamento.dsTipo" name="tiposEquipamento">
+                                                    <mat-option *ngFor="let tipo of tiposEquipamento" [value]="tipo">
+                                                        {{tipo}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <!-- <select class="form-control" [(ngModel)]="equipamento.dsTipo"  name="dsTipo">
+                                                <option *ngFor="let tipo of tiposEquipamento" value="{{tipo}}"
+                                                    selected="{{tipo == 'GMG'}}" >
+                                                    {{tipo}}
+                                                </option>
+                                            </select> -->
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+
+                                            <button title="Editar" style="float: right;" (click)="addEquipamento()"
+                                                class="btn btn-fill btn-info btn-simple btn-md">
+                                                Adicionar
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="content table-responsive table-full-width">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nome</th>
+                                                    <th>Tipo</th>
+                                                    <th></th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr *ngFor="let e of form.equipamentos; let i = index">
+                                                    <td><b>{{e.dsEquipamento}}</b></td>
+
+                                                    <td>{{e.dsTipo}}</td>
+
+                                                    <td class="td-actions text-right">
+
+                                                        <a rel="tooltip" title="Remove" (click)="deletarEquipamento(i)"
+                                                            class="btn btn-danger btn-fill btn-simple btn-md">
+                                                            Excluir
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <hr>
+
+                                    <div>
+
+                                        <button class="btn btn-fill btn-theme" (click)="salvar($event)"
+                                            style="margin-right: 10px;">Salvar&nbsp;<i class="fa fa-save"></i></button>
+                                        <button class="btn btn-fill btn-theme" [routerLink]="['/cliente/consulta']">
+                                            Voltar&nbsp; <i class="fa fa-arrow-left"></i></button>
+                                        <!-- <button class="btn btn-danger" style="margin-left: 5px;" value="0"
+                                        (click)="mudarStatusEmpresa($event)"><i
+                                            class="fa fa-close"></i>&nbsp;Inativar</button> -->
+                                        <!-- <button class="btn btn-fill btn-theme" style="margin-left: 5px;" value="1"
+                                        (click)="mudarStatusEmpresa($event)">Ativar</button> -->
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.col-->
+                </div>
+            </div>
+
+
+        </div>
+        <!--/.col-->
+    </div><!-- /.container-fluid -->
+
+</body>
+<!-- Button trigger modal -->
+<!-- Modal -->

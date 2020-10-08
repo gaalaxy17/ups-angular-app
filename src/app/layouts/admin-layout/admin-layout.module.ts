@@ -19,6 +19,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import {MatSelectModule} from '@angular/material/select';
+import { ChamadoConsultaComponent } from 'app/chamado/chamado-consulta/chamado-consulta.component';
+import { ChamadoDetalheComponent } from 'app/chamado/chamado-detalhe/chamado-detalhe.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 // export let options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -38,13 +42,17 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     MatInputModule,
     NgxMaskModule.forRoot(),
     NgbModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    MatSelectModule,
+    MatAutocompleteModule
     
   ],
   declarations: [
     HomeComponent,
     ClienteConsultaComponent,
-    ClienteDetalheComponent
+    ClienteDetalheComponent,
+    ChamadoConsultaComponent,
+    ChamadoDetalheComponent
   ]
 })
 

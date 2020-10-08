@@ -17,6 +17,7 @@ declare var $: any;
 export class ClienteDetalheComponent implements OnInit {
 
   cdCliente = null;
+  empresaFormSubmitted = false;
 
   form: any = {
     nmEmpresa: null,
@@ -46,6 +47,7 @@ export class ClienteDetalheComponent implements OnInit {
     nrCelular: null,
     fgClienteContrato: false,
     nrDuracaoContrato: null,
+    dtInicioContrato: null,
     nrDiaPrevisto: null,
     tecnicoPrevisto: null,
     fgAtivo: true
@@ -58,7 +60,7 @@ export class ClienteDetalheComponent implements OnInit {
   }
 
   tiposEquipamento = [
-    "GMG","Nobreak"
+    "GMG", "Nobreak"
   ]
 
   tecnicos = [];
@@ -67,7 +69,7 @@ export class ClienteDetalheComponent implements OnInit {
 
   private readonly notifier: NotifierService;
 
-  constructor(public clienteService: ClienteService, public notifierService: NotifierService, public modalService: NgbModal, public route:ActivatedRoute) {
+  constructor(public clienteService: ClienteService, public notifierService: NotifierService, public modalService: NgbModal, public route: ActivatedRoute) {
     this.notifier = notifierService;
   }
 
@@ -76,7 +78,7 @@ export class ClienteDetalheComponent implements OnInit {
     this.carregarCombos();
 
     this.route.queryParams.subscribe(params => {
-      if(params['cdCliente']){
+      if (params['cdCliente']) {
         this.cdCliente = params['cdCliente'];
         this.detalhar();
       }
@@ -261,31 +263,47 @@ export class ClienteDetalheComponent implements OnInit {
   }
 
   salvar() {
-    this.clienteService.salvar(this.form).then((results) => {
 
-      if(results){
-        this.form.cdEmpresa = results.cdEmpresa;
-      }
+    this.empresaFormSubmitted = true;
 
-      this.notifier.notify("success", "Dados salvos com sucesso.");
-    })
+    if (
+      this.form.nmEmpresa && this.form.nrDocumento && this.form.nrCep 
+      && this.form.nmRua && this.form.nrNumero && this.form.nmBairro 
+      && this.form.nmCidade && this.form.nmEstado
+      
+      ) {
+
+      this.clienteService.salvar(this.form).then((results) => {
+
+        if (results) {
+          this.form.cdEmpresa = results.cdEmpresa;
+        }
+
+        this.notifier.notify("success", "Dados salvos com sucesso.");
+      })
+    }
+    else{
+      this.notifier.notify("error", "Há campos de preenchimento obrigatório em branco");
+    }
+
+
   }
 
-  detalhar(){
-    this.clienteService.detalhar(this.cdCliente).then((empresa)=>{
+  detalhar() {
+    this.clienteService.detalhar(this.cdCliente).then((empresa) => {
       this.form = empresa;
     })
   }
 
-  inativarUnidade(unidade){
-    this.clienteService.mudarStatusUnidade(unidade.cdUnidade,0).then((results)=>{
+  inativarUnidade(unidade) {
+    this.clienteService.mudarStatusUnidade(unidade.cdUnidade, 0).then((results) => {
       this.detalhar();
       console.log(results);
     })
   }
 
-  reativarUnidade(unidade){
-    this.clienteService.mudarStatusUnidade(unidade.cdUnidade,1).then((results)=>{
+  reativarUnidade(unidade) {
+    this.clienteService.mudarStatusUnidade(unidade.cdUnidade, 1).then((results) => {
       this.detalhar();
       console.log(results);
     })

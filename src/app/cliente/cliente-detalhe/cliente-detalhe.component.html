@@ -9,6 +9,14 @@
     .modal-backdrop {
         z-index: 2;
     }
+
+    .input-error input {
+        border-color: red;
+    }
+
+    .input-error label{
+        color:red;
+    }
 </style>
 
 <ngx-spinner color="#ed1c24" type="line-scale" size="medium"></ngx-spinner>
@@ -40,8 +48,8 @@
                                 <form style="padding: 30px;">
                                     <input type="hidden">
                                     <div class="row">
-                                        <div class="form-group col-lg-12 col-md-12 col-sm-12">
-                                            <label for="company">Nome da Empresa <span
+                                        <div class="form-group col-lg-12 col-md-12 col-sm-12" [class]="{'input-error': empresaFormSubmitted && !form.nmEmpresa}"> 
+                                            <label for="company" >Nome da Empresa <span
                                                     style="color:red">*</span></label>
                                             <input type="text" class="form-control" name="nmEmpresa"
                                                 [(ngModel)]="form.nmEmpresa" placeholder="Digite o nome da empresa"
@@ -49,13 +57,13 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12" [class]="{'input-error': empresaFormSubmitted && !form.nrDocumento}">
                                             <label for="vat">CNPJ <span style="color:red">*</span></label>
                                             <input type="text" class="form-control" [dropSpecialCharacters]="false"
                                                 [(ngModel)]="form.nrDocumento" mask='00.000.000/0000-00' name="nrCnpj"
                                                 id="vat" placeholder="Digite o número do CNPJ">
                                         </div>
-                                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12" >
                                             <label for="street">Inscrição Estadual</label>
                                             <input type="text" class="form-control" name="nrIe"
                                                 [dropSpecialCharacters]="false" mask='000.000.000.000'
@@ -64,20 +72,20 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-lg-2 col-md-2 col-sm-12">
+                                        <div class="form-group col-lg-2 col-md-2 col-sm-12" [class]="{'input-error': empresaFormSubmitted && !form.nrCep}">
                                             <label for="company">CEP <span style="color:red">*</span></label>
                                             <input type="text" class="form-control" name="nrCep"
                                                 [dropSpecialCharacters]="true" mask='00000-000'
                                                 (blur)="carregarEnderecoEmpresaByCep()" [(ngModel)]="form.nrCep"
                                                 placeholder="Digite o CEP da empresa" required>
                                         </div>
-                                        <div class="form-group col-lg-8 col-md-8 col-sm-12">
+                                        <div class="form-group col-lg-8 col-md-8 col-sm-12" [class]="{'input-error': empresaFormSubmitted && !form.nmRua}">
                                             <label for="company">Endereço <span style="color:red">*</span></label>
                                             <input type="text" class="form-control" name="nmRua"
                                                 [(ngModel)]="form.nmRua" placeholder="Digite o endereço da empresa"
                                                 required>
                                         </div>
-                                        <div class="form-group col-lg-2 col-md-2 col-sm-12">
+                                        <div class="form-group col-lg-2 col-md-2 col-sm-12" [class]="{'input-error': empresaFormSubmitted && !form.nrNumero}">
                                             <label for="company">Número <span style="color:red">*</span></label>
                                             <input type="text" class="form-control" name="nrNumero"
                                                 [(ngModel)]="form.nrNumero" placeholder="Digite o número da empresa"
@@ -85,25 +93,26 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                                            <label for="company">Complemento </label>
-                                            <input type="text" class="form-control" name="dsComplemento"
-                                                [(ngModel)]="form.dsComplemento" placeholder="Digite o complemento"
-                                                required>
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12" >
+                                            <label for="company">Complemento 
+                                                < </label>
+                                                    <input type="text" class="form-control" name="dsComplemento"
+                                                        [(ngModel)]="form.dsComplemento"
+                                                        placeholder="Digite o complemento" required>
                                         </div>
-                                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                                            <label for="company">Bairro </label>
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12" [class]="{'input-error': empresaFormSubmitted && !form.nmBairro}">
+                                            <label for="company">Bairro <span style="color:red">*</span></label>
                                             <input type="text" class="form-control" name="nmBairro"
                                                 [(ngModel)]="form.nmBairro" placeholder="Digite o bairro" required>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12" [class]="{'input-error': empresaFormSubmitted && !form.nmCidade}">
                                             <label for="street">Cidade <span style="color:red">*</span></label>
                                             <input type="text" class="form-control" name="nmCidade"
                                                 [(ngModel)]="form.nmCidade" placeholder="Digite a cidade" required>
                                         </div>
-                                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-12" [class]="{'input-error': empresaFormSubmitted && !form.nmEstado}">
                                             <label for="vat">Estado <span style="color:red">*</span></label>
                                             <input type="text" class="form-control" name="nmEstado"
                                                 [(ngModel)]="form.nmEstado" placeholder="Digite o estado" required>
@@ -176,8 +185,6 @@
                                     </div>
                                     <hr>
                                     <div>
-                                        <div style="color:red; margin-bottom: 8px;">Há campos obrigatórios em branco.
-                                        </div>
 
                                         <button class="btn btn-fill btn-theme" (click)="salvar($event)"
                                             style="margin-right: 10px;">Salvar&nbsp;<i class="fa fa-save"></i></button>
@@ -202,69 +209,6 @@
         </div>
         <!--/.col-->
     </div><!-- /.container-fluid -->
-
-    <div class="modal fade" id="modalDetalheEndereco" role="dialog" aria-labelledby="exampleModalLabel"
-        data-backdrop="false" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="modal-detalhe-endereco-body">
-                    <div class="row">
-                        <div class="form-group col-lg-2 col-md-2 col-sm-12">
-                            <label for="company">CEP <span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="nrCep" [dropSpecialCharacters]="true"
-                                mask='00000-000' [(ngModel)]="form.nrCep" placeholder="Digite o CEP da empresa"
-                                required>
-                        </div>
-                        <div class="form-group col-lg-8 col-md-8 col-sm-12">
-                            <label for="company">Endereço <span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="nmRua" [(ngModel)]="form.nmRua"
-                                placeholder="Digite o endereço da empresa" required>
-                        </div>
-                        <div class="form-group col-lg-2 col-md-2 col-sm-12">
-                            <label for="company">Número <span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="nrNumero" [(ngModel)]="form.nrNumero"
-                                placeholder="Digite o número da empresa" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                            <label for="company">Complemento </label>
-                            <input type="text" class="form-control" name="dsComplemento"
-                                [(ngModel)]="form.dsComplemento" placeholder="Digite o complemento" required>
-                        </div>
-                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                            <label for="company">Bairro </label>
-                            <input type="text" class="form-control" name="nmBairro" [(ngModel)]="form.nmBairro"
-                                placeholder="Digite o bairro" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                            <label for="street">Cidade <span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="nmCidade" [(ngModel)]="form.nmCidade"
-                                placeholder="Digite a cidade" required>
-                        </div>
-                        <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                            <label for="vat">Estado <span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="nmEstado" [(ngModel)]="form.nmEstado"
-                                placeholder="Digite o estado" required>
-                        </div>
-
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-fill btn-secondary" data-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-fill btn-danger">Salvar</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="modal fade" id="modalDetalheUnidade" role="dialog" data-backdrop="false" aria-hidden="true"
         style="z-index: 10;">
@@ -309,7 +253,7 @@
                                 [(ngModel)]="item.dsComplemento" placeholder="Complemento da Unidade" required>
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                            <label for="company">Bairro </label>
+                            <label for="company">Bairro  <span style="color:red">*</span> </label>
                             <input type="text" class="form-control" name="nmBairro" [(ngModel)]="item.nmBairro"
                                 placeholder="Bairro da Unidade" required>
                         </div>
@@ -343,7 +287,7 @@
                                 mask='(00) 0000-0000' required>
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                            <label for="vat">Celular <span style="color:red">*</span></label>
+                            <label for="vat">Celular </label>
                             <input type="text" class="form-control" name="nrCelular" [(ngModel)]="item.nrCelular"
                                 placeholder="Celular para Contato" [dropSpecialCharacters]="false"
                                 mask='(00) 00000-0000' required>
@@ -373,8 +317,8 @@
                             <mat-form-field style="display: block;">
                                 <mat-label>Início</mat-label>
                                 <input matInput name="dtInicioContrato" [matDatepicker]="inicioContratoPicker"
-                                [(ngModel)]="item.dtInicioContrato"
-                                    [disabled]="!item.fgClienteContrato" (click)="inicioContratoPicker.open()">
+                                    [(ngModel)]="item.dtInicioContrato" [disabled]="!item.fgClienteContrato"
+                                    (click)="inicioContratoPicker.open()">
                                 <mat-datepicker-toggle matSuffix [for]="inicioContratoPicker">
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #inicioContratoPicker></mat-datepicker>
@@ -384,17 +328,18 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                            <label for="vat">Dia Previsto <span style="color:red">*</span></label>
+                            <label for="vat">Dia Previsto </label>
                             <input type="number" class="form-control" name="nrDiaPrevisto"
                                 [(ngModel)]="item.nrDiaPrevisto" [disabled]="!item.fgClienteContrato"
                                 placeholder="Dia do mês previsto para o atendimento" required>
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-sm-12">
-                            <label for="vat">Técnico Previsto <span style="color:red">*</span></label>
+                            <label for="vat">Técnico Previsto </label>
                             <select class="form-control" name="nrDiaPrevisto" [(ngModel)]="item.cdTecnicoPrevisto"
                                 [disabled]="!item.fgClienteContrato" placeholder="Técnico previsto para o atendimento"
                                 required>
-                                <option *ngFor="let t of tecnicos" value="{{t.cdLogin}}" [selected]="item.cdTecnicoPrevisto == t.cdLogin">{{t.nmUser}}</option>
+                                <option *ngFor="let t of tecnicos" value="{{t.cdLogin}}"
+                                    [selected]="item.cdTecnicoPrevisto == t.cdLogin">{{t.nmUser}}</option>
 
                             </select>
                         </div>
@@ -410,14 +355,14 @@
 
                             <select class="form-control" [(ngModel)]="equipamento.dsTipo">
                                 <option *ngFor="let tipo of tiposEquipamento" value="{{tipo}}"
-                                    selected="{{tipo == 'GMG'}}" [disabled]="!item.fgClienteContrato">{{tipo}} 
+                                    selected="{{tipo == 'GMG'}}" [disabled]="!item.fgClienteContrato">{{tipo}}
                                 </option>
                             </select>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-12">
 
-                            <button title="Editar" style="float: right;" (click)="addEquipamento(item)" [disabled]="!item.fgClienteContrato"
-                                class="btn btn-fill btn-info btn-simple btn-md">
+                            <button title="Editar" style="float: right;" (click)="addEquipamento(item)"
+                                [disabled]="!item.fgClienteContrato" class="btn btn-fill btn-info btn-simple btn-md">
                                 Adicionar
                                 <i class="fa fa-plus"></i>
                             </button>
@@ -460,7 +405,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-fill btn-secondary" data-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-fill btn-danger" (click)="salvarUnidade()">Salvar</button>
+                    <button type="button" class="btn btn-fill btn-danger" [disabled]="(!item.fgClienteContrato && (!item.nmUnidade || !item.nmContatoCli || !item.nrTelefone || !item.nrCep 
+                    || !item.nmRua || !item.nrNumero || !item.nmBairro 
+                    || !item.nmCidade || !item.nmEstado) || (item.fgClienteContrato && (!item.nmUnidade || !item.nmContatoCli || !item.nrTelefone || !item.nrCep 
+                    || !item.nmRua || !item.nrNumero || !item.nmBairro 
+                    || !item.nmCidade || !item.nmEstado || !item.nrDuracaoContrato || !item.dtInicioContrato)))" (click)="salvarUnidade()">Salvar</button>
                 </div>
             </div>
         </div>

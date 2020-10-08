@@ -46,7 +46,7 @@
                             <div class="form-group">
                                 <button class="btn btn-fill btn-theme" (click)="buscar()" style="margin-right: 5px"><i
                                         class="fa fa-search"></i>&nbsp;Buscar</button>
-                                <button class="btn btn-fill btn-theme" [routerLink]="['/cliente/detalhe']"
+                                <button class="btn btn-fill btn-theme" [routerLink]="['/chamado/detalhe']"
                                     [queryParams]="{new: 1}"><i class="fa fa-file"></i>&nbsp;Novo</button>
                             </div>
                         </div>
@@ -80,23 +80,18 @@
                                     <td *ngIf="cliente.stStatus == 'ativo'">Ativo</td>
                                     <td *ngIf="cliente.stStatus == 'inativo'">Inativo</td>
                                     <td>
-                                        <button class="btn btn-fill btn-primary" [routerLink]="['/chamado/detalhe']"
-                                            [queryParams]="{cdEmpresa: cliente.cdEmpresa}">Abrir Chamado</button>
-                                        <button class="btn btn-theme" style="float: right;"
-                                            [routerLink]="['/cliente/detalhe']"
-                                            [queryParams]="{cdCliente: cliente.cdEmpresa}">Editar</button>
-
-
+                                        <button class="btn btn-theme" [routerLink]="['/cliente/detalhe']"
+                                            [queryParams]="{cdCliente: cliente.cdEmpresa}">Detalhes</button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <ngb-pagination style="float: right; margin-right: 25px;" [(page)]="page" [pageSize]="pageSize"
+                <!-- <ngb-pagination style="float: right; margin-right: 25px;" [(page)]="page" [pageSize]="pageSize"
                     [collectionSize]="clientes.length" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
                     *ngIf="clientes.length > 0">
-                </ngb-pagination>
+                </ngb-pagination> -->
 
             </div>
         </div>
