@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChamadoService } from 'app/services/chamado.service';
 
 @Component({
   selector: 'app-chamado-consulta',
@@ -7,29 +8,43 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChamadoConsultaComponent implements OnInit {
 
-  
+
   public page = 1;
   public pageSize = 10;
 
   filtro: any = {
+    cdAtendimento: null,
     nmEmpresa: null,
-    nrDocumento: null
+    cdTipoAtendimento: null,
+    dtFiltroDe: null,
+    dtFiltroAte: null
   }
 
-  clientes: [];
+  chamados: any = [];
+  empresas: any = [];
+  unidades: any = [];
+  tiposAtendimento: any = [];
 
-  constructor() { }
+  constructor(private chamadoService: ChamadoService) { }
 
   ngOnInit(): void {
+    this.carregarCombos();
     this.buscar();
+  }
+
+  carregarCombos() {
+    this.chamadoService.carregarCombos().then((combos) => {
+      this.tiposAtendimento = combos.tiposAtendimento;
+      this.empresas = combos.empresas;
+    })
   }
 
   buscar() {
 
-    // this.clienteService.buscar(this.filtro).then((results) => {
-    //   this.clientes = results;
-    //   console.log(results);
-    // })
+    this.chamadoService.buscar(this.filtro).then((results) => {
+      this.chamados = results;
+      console.log(results);
+    })
 
   }
 

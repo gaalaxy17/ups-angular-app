@@ -29,16 +29,56 @@
                                 </thead>
                                 <tbody>
                                     <tr height="50px">
-                                        <td> <label for="company"><b>Nome da Empresa</b></label></td>
-                                        <td> <input type="text" class="form-control col-6"
-                                                [(ngModel)]="filtro.nmEmpresa" placeholder="Digite o nome da empresa">
+                                        <td> <label for="company"><b>ID</b></label></td>
+                                        <td>
+                                            <input type="number" class="form-control col-6"
+                                                [(ngModel)]="filtro.cdAtendimento" placeholder="Digite o ID do chamado">
                                         </td>
                                     </tr>
                                     <tr height="50px">
-                                        <td> <label for="company"><b>CNPJ</b></label>
+                                        <td> <label for="company"><b>Empresa</b></label>
                                         </td>
-                                        <td> <input type="text" class="form-control col-6"
-                                                [(ngModel)]="filtro.nrDocumento" placeholder="Digite o CNPJ"></td>
+                                        <td>
+                                            <input type="text" class="form-control col-6" [(ngModel)]="filtro.nmEmpresa"
+                                                placeholder="Digite o nome da empresa">
+                                        </td>
+                                    </tr>
+                                    <tr height="50px">
+                                        <td> <label for="company"><b>Tipo</b></label>
+                                        </td>
+                                        <td>
+                                            <mat-form-field style="width: 100%;">
+                                                <mat-select (selectionChange)="carregarEquipamentos()"
+                                                    name="cdTipoAtendimento" [(ngModel)]="filtro.cdTipoAtendimento">
+                                                    <mat-option *ngFor="let t of tiposAtendimento"
+                                                        [value]="t.cdTipoAtendimento">
+                                                        {{t.dsTipoAtendimento}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td> <label for="company" class="control-label">Periodo Criação</label>
+                                        </td>
+                                        <td>
+                                            <mat-form-field style="margin-right: 20px;">
+                                                <mat-label>De</mat-label>
+                                                <input matInput name="dtPeriodoDe" (click)="dtPeriodoDe.open()"
+                                                    [(ngModel)]="filtro.dtFiltroDe" [matDatepicker]="dtPeriodoDe">
+                                                <mat-datepicker-toggle matSuffix [for]="dtPeriodoDe">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #dtPeriodoDe></mat-datepicker>
+                                            </mat-form-field>
+                                            <mat-form-field>
+                                                <mat-label>Até</mat-label>
+                                                <input matInput name="dtPeriodoAte" (click)="dtPeriodoAte.open()"
+                                                    [(ngModel)]="filtro.dtFiltroAte" [matDatepicker]="dtPeriodoAte">
+                                                <mat-datepicker-toggle matSuffix [for]="dtPeriodoAte">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #dtPeriodoAte></mat-datepicker>
+                                            </mat-form-field>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -59,39 +99,38 @@
                             <thead style="background: #24292e; color: white;">
                                 <tr>
                                     <th style="padding: 15px; color: white;">ID</th>
+                                    <th style="padding: 15px; color: white;">Dt. Criação</th>
                                     <th style="padding: 15px; color: white;">Empresa</th>
-                                    <th style="padding: 15px; color: white;">CNPJ</th>
-                                    <th style="padding: 15px; color: white;">I.E</th>
-                                    <th style="padding: 15px; color: white;">Status</th>
-                                    <th style="padding: 15px; color: white;"></th>
+                                    <th style="padding: 15px; color: white;">Unidade</th>
+                                    <th style="padding: 15px; color: white;">Tipo</th>
+                                    <th style="padding: 15px; color: white;">Responsável</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr
-                                    *ngFor="let cliente of clientes  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
-                                    <td>{{cliente.cdEmpresa}}</td>
-                                    <td><b>{{cliente.nmEmpresa}}</b></td>
+                                    *ngFor="let chamado of chamados  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                                    <td>{{chamado.cdAtendimento}}</td>
                                     <td>
-                                        <span>{{cliente.nrDocumento | mask: '00.000.000/0000-00' }}</span></td>
-                                    <td>
-                                        <span *ngIf="cliente.nrInscricaoEstadual">{{cliente.nrInscricaoEstadual}}</span>
-                                        <span *ngIf="!cliente.nrInscricaoEstadual">Não informado</span>
+                                        <span>{{chamado.dtCriacao | date:'dd/MM/yyyy' }}</span>
                                     </td>
-                                    <td *ngIf="cliente.stStatus == 'ativo'">Ativo</td>
-                                    <td *ngIf="cliente.stStatus == 'inativo'">Inativo</td>
+                                    <td><b>{{chamado.nmEmpresa}}</b></td>
+                                    <td><b>{{chamado.nmUnidade}}</b></td>
+                                    <td>{{chamado.dsTipoAtendimento}}</td>
+                                    <td>{{chamado.dsUserChamado}}</td>
                                     <td>
-                                        <button class="btn btn-theme" [routerLink]="['/cliente/detalhe']"
-                                            [queryParams]="{cdCliente: cliente.cdEmpresa}">Detalhes</button>
+                                        <button class="btn btn-theme" [routerLink]="['/chamado/detalhe']"
+                                            [queryParams]="{cdAtendimento: chamado.cdAtendimento}">Detalhes</button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <!-- <ngb-pagination style="float: right; margin-right: 25px;" [(page)]="page" [pageSize]="pageSize"
-                    [collectionSize]="clientes.length" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
-                    *ngIf="clientes.length > 0">
-                </ngb-pagination> -->
+                <ngb-pagination style="float: right; margin-right: 25px;" [(page)]="page" [pageSize]="pageSize"
+                    [collectionSize]="chamados.length" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
+                    *ngIf="chamados.length > 0">
+                </ngb-pagination>
 
             </div>
         </div>
