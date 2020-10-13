@@ -21,6 +21,8 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { AuthInterceptor } from './commons/auth.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { AtendimentoConsultaComponent } from './atendimento/atendimento-consulta/atendimento-consulta.component';
+import { AtendimentoDetalheComponent } from './atendimento/atendimento-detalhe/atendimento-detalhe.component';
 
 
 

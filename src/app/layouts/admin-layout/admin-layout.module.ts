@@ -23,6 +23,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { ChamadoConsultaComponent } from 'app/chamado/chamado-consulta/chamado-consulta.component';
 import { ChamadoDetalheComponent } from 'app/chamado/chamado-detalhe/chamado-detalhe.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { AtendimentoConsultaComponent } from 'app/atendimento/atendimento-consulta/atendimento-consulta.component';
+import { AtendimentoDetalheComponent } from 'app/atendimento/atendimento-detalhe/atendimento-detalhe.component';
 
 // export let options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -52,7 +54,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     ClienteConsultaComponent,
     ClienteDetalheComponent,
     ChamadoConsultaComponent,
-    ChamadoDetalheComponent
+    ChamadoDetalheComponent,
+    AtendimentoConsultaComponent,
+    AtendimentoDetalheComponent
   ]
 })
 

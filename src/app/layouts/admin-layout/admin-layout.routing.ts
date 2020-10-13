@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { AtendimentoConsultaComponent } from 'app/atendimento/atendimento-consulta/atendimento-consulta.component';
+import { AtendimentoDetalheComponent } from 'app/atendimento/atendimento-detalhe/atendimento-detalhe.component';
 import { ChamadoConsultaComponent } from 'app/chamado/chamado-consulta/chamado-consulta.component';
 import { ChamadoDetalheComponent } from 'app/chamado/chamado-detalhe/chamado-detalhe.component';
 import { ClienteConsultaComponent } from 'app/cliente/cliente-consulta/cliente-consulta.component';
@@ -15,5 +17,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'cliente/detalhe', component: ClienteDetalheComponent, canActivate: [AuthGuard] },
     { path: 'chamado/consulta', component: ChamadoConsultaComponent, canActivate: [AuthGuard] },
     { path: 'chamado/detalhe', component: ChamadoDetalheComponent, canActivate: [AuthGuard] },
+    { path: 'atendimento/consulta', component: AtendimentoConsultaComponent, canActivate: [AuthGuard] },
+    { path: 'atendimento/detalhe', component: AtendimentoDetalheComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent }
 ];

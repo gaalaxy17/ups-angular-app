@@ -1,21 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NotifierService } from 'angular-notifier';
-import * as uuid from 'uuid';
 import { ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ChamadoService } from 'app/services/chamado.service';
 import { ClienteService } from 'app/services/cliente.service';
 import { TipoAtendimento } from 'app/commons/enum/tipoAtendimento';
-// import * as $ from 'jquery';
-
-declare var $: any;
+import { AtendimentoService } from 'app/services/atendimento.service';
 
 @Component({
-  selector: 'app-chamado-detalhe',
-  templateUrl: './chamado-detalhe.component.html',
-  styleUrls: ['./chamado-detalhe.component.css']
+  selector: 'app-atendimento-detalhe',
+  templateUrl: './atendimento-detalhe.component.html',
+  styleUrls: ['./atendimento-detalhe.component.css']
 })
-export class ChamadoDetalheComponent implements OnInit {
+export class AtendimentoDetalheComponent implements OnInit {
 
   cdCliente = null;
   chamadoFormSubmitted = false;
@@ -25,13 +21,15 @@ export class ChamadoDetalheComponent implements OnInit {
   tiposAtendimento = [];
   empresas = [];
   unidades = [];
+  tecnicos = [];
 
 
   form: any = {
     cdEmpresa: null,
     cdUnidade: null,
     cdTipoAtendimento: null,
-    equipamentos: []
+    equipamentos: [],
+    tecnicos: []
   }
 
   equipamento: any = {
@@ -40,13 +38,15 @@ export class ChamadoDetalheComponent implements OnInit {
     fgAtivo: true
   }
 
+  tecnico: any = null;
+
   tiposEquipamento = [
     "GMG", "Nobreak"
   ]
 
   private readonly notifier: NotifierService;
 
-  constructor(public chamadoService: ChamadoService, public notifierService: NotifierService, public route: ActivatedRoute, public clienteService: ClienteService) {
+  constructor(public chamadoService: ChamadoService, public notifierService: NotifierService, public route: ActivatedRoute, public clienteService: ClienteService, public atendimentoService: AtendimentoService) {
     this.notifier = notifierService;
   }
 
@@ -54,12 +54,6 @@ export class ChamadoDetalheComponent implements OnInit {
 
     this.carregarCombos().then((combos) => {
       this.route.queryParams.subscribe(params => {
-        if (params['cdEmpresa']) {
-          this.cdEmpresa = params['cdEmpresa'];
-          this.form.cdEmpresa = parseInt(params['cdEmpresa']);
-          this.carregarUnidades();
-          // this.detalhar();
-        }
         if (params['cdAtendimento']) {
           this.cdAtendimento = params['cdAtendimento'];
           this.form.cdAtendimento = parseInt(params['cdAtendimento']);
@@ -81,6 +75,7 @@ export class ChamadoDetalheComponent implements OnInit {
         console.log(combos);
         this.tiposAtendimento = combos.tiposAtendimento;
         this.empresas = combos.empresas;
+        this.tecnicos = combos.tecnicos;
       }).catch((fail) => {
         console.log(fail);
         reject(fail);
@@ -114,6 +109,30 @@ export class ChamadoDetalheComponent implements OnInit {
           fgAtivo: this.equipamento.fgAtivo
         }
         this.form.equipamentos.push(equipamento);
+      }
+
+    }
+
+  }
+
+  addTecnico() {
+
+    let hasFound = false;
+
+    if (this.form.tecnicos) {
+      if (this.tecnico) {
+        if(this.form.tecnicos.length > 0){
+          this.form.tecnicos.forEach((item,i)=>{
+            if(item.cdLogin == this.tecnico.cdLogin){
+              hasFound = true;
+            }
+          })
+        }
+
+        if(!hasFound){
+          this.form.tecnicos.push(this.tecnico);
+        }
+
       }
 
     }
@@ -154,12 +173,12 @@ export class ChamadoDetalheComponent implements OnInit {
     this.chamadoFormSubmitted = true;
 
     if (
-      this.form.cdEmpresa && this.form.cdUnidade && this.form.cdTipoAtendimento && this.form.dsDescricao && this.form.equipamentos.length > 0
+      this.form.cdEmpresa && this.form.cdUnidade && this.form.cdTipoAtendimento && this.form.dsDescricao && this.form.equipamentos.length > 0 && this.form.tecnicos.length > 0 && this.form.dtAtendimento
     ) {
 
       console.log(this.form);
 
-      this.chamadoService.salvar(this.form).then((results) => {
+      this.atendimentoService.salvar(this.form).then((results) => {
 
         if (results) {
           this.form.cdAtendimento = results.cdAtendimento;
@@ -177,6 +196,15 @@ export class ChamadoDetalheComponent implements OnInit {
   detalhar() {
     this.chamadoService.detalhar(this.cdAtendimento).then((chamado) => {
       this.form = chamado;
+
+      if(!chamado.dtAtendimento){
+        this.form.dtAtendimento = null;
+      }
+
+      if(!chamado.tecnicos){
+        this.form.tecnicos = [];
+      }
+
       this.carregarUnidades();
     })
   }

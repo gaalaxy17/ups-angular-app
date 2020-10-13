@@ -80,11 +80,12 @@
                                     <td *ngIf="cliente.stStatus == 'ativo'">Ativo</td>
                                     <td *ngIf="cliente.stStatus == 'inativo'">Inativo</td>
                                     <td>
-                                        <button class="btn btn-fill btn-primary" [routerLink]="['/chamado/detalhe']"
-                                            [queryParams]="{cdEmpresa: cliente.cdEmpresa}">Abrir Chamado</button>
-                                        <button class="btn btn-theme" style="float: right;"
+                                        <button class="btn btn-theme"
                                             [routerLink]="['/cliente/detalhe']"
                                             [queryParams]="{cdCliente: cliente.cdEmpresa}">Editar</button>
+                                        <button class="btn btn-fill btn-primary"  style="float: right;" [routerLink]="['/chamado/detalhe']"
+                                            [queryParams]="{cdEmpresa: cliente.cdEmpresa}">Chamado</button>
+                                        
 
 
                                     </td>

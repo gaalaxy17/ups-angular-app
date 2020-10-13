@@ -52,8 +52,8 @@
                                             [class]="{'input-error': chamadoFormSubmitted && !form.cdEmpresa}">
                                             <mat-form-field appearance="fill" style="width: 100%;">
                                                 <mat-label>Empresa <span style="color:red">*</span></mat-label>
-                                                <mat-select (selectionChange)="carregarUnidades()" name="cdEmpresa"
-                                                    [disabled]="form.cdAtendimento" [(ngModel)]="form.cdEmpresa">
+                                                <mat-select (selectionChange)="carregarUnidades()" name="cdEmpresa" [disabled]="form.cdAtendimento"
+                                                    [(ngModel)]="form.cdEmpresa">
                                                     <mat-option *ngFor="let e of empresas" [value]="e.cdEmpresa">
                                                         {{e.nmEmpresa}}
                                                     </mat-option>
@@ -64,8 +64,7 @@
                                             [class]="{'input-error': chamadoFormSubmitted && !form.cdUnidade}">
                                             <mat-form-field appearance="fill" style="width: 100%;">
                                                 <mat-label>Unidade <span style="color:red">*</span></mat-label>
-                                                <mat-select [(ngModel)]="form.cdUnidade" name="cdUnidade"
-                                                    [disabled]="form.cdAtendimento">
+                                                <mat-select [(ngModel)]="form.cdUnidade" name="cdUnidade" [disabled]="form.cdAtendimento">
                                                     <mat-option *ngFor="let u of unidades" [value]="u.cdUnidade">
                                                         {{u.nmUnidade}}
                                                     </mat-option>
@@ -77,26 +76,27 @@
                                         <div class="form-group col-lg-12 col-md-12 col-sm-12"
                                             [class]="{'input-error': chamadoFormSubmitted && !form.cdTipoAtendimento}">
                                             <mat-form-field appearance="fill" style="width: 100%;">
-                                                <mat-label>Tipo Chamado <span style="color:red">*</span></mat-label>
-                                                <mat-select (selectionChange)="carregarEquipamentos()"
-                                                    name="cdTipoAtendimento" [(ngModel)]="form.cdTipoAtendimento">
+                                                <mat-label>Tipo Atendimento <span style="color:red">*</span></mat-label>
+                                                <mat-select (selectionChange)="carregarEquipamentos()" name="cdTipoAtendimento" [disabled]="form.cdAtendimento"  [(ngModel)]="form.cdTipoAtendimento">
                                                     <mat-option *ngFor="let t of tiposAtendimento"
                                                         [value]="t.cdTipoAtendimento">
                                                         {{t.dsTipoAtendimento}}
                                                     </mat-option>
                                                 </mat-select>
                                             </mat-form-field>
-                                            <!-- <label for="company">Tipo Chamado<span style="color:red">*</span></label>
-                                            <select class="form-control" name="cdTipoAtendimento"
-                                                [(ngModel)]="form.cdTipoAtendimento" placeholder="Tipo atendimento"
-                                                required>
-                                                <option *ngFor="let ta of tiposAtendimento"
-                                                    value="{{ta.cdTipoAtendimento}}"
-                                                    [selected]="form.cdTipoAtendimento == ta.cdTipoAtendimento">
-                                                    {{ta.dsTipoAtendimento}}
-                                                </option>
-
-                                            </select> -->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-12 col-md-12 col-sm-12"
+                                            [class]="{'input-error': chamadoFormSubmitted && !form.cdTipoAtendimento}">
+                                            <mat-form-field appearance="fill" style="width: 100%;">
+                                                <mat-label>Data Atendimento <span style="color:red">*</span></mat-label>
+                                                <input matInput name="dtAtendimento" (click)="dtAtendimento.open()" readonly
+                                                    [(ngModel)]="form.dtAtendimento" [matDatepicker]="dtAtendimento">
+                                                <mat-datepicker-toggle matSuffix [for]="dtAtendimento">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #dtAtendimento></mat-datepicker>
+                                            </mat-form-field>
                                         </div>
                                     </div>
 
@@ -104,40 +104,33 @@
                                     <h4>Descrição do Serviço <span style="color:red">*</span></h4>
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
-                                            <textarea class="form-control" type="text" name="dsDescricao"
+                                            <textarea class="form-control" type="text" name="dsDescricao" [disabled]="form.cdAtendimento"
                                                 [(ngModel)]="form.dsDescricao"></textarea>
                                         </div>
                                     </div>
 
                                     <hr>
 
-                                    <h4>Equipamentos <span style="color:red">*</span></h4>
-                                    <div class="row">
+                                    <h4>Equipamentos <span *ngIf="!form.cdAtendimento" style="color:red">*</span></h4>
+                                    <div class="row" *ngIf="!form.cdAtendimento">
                                         <div class="col-lg-5 col-md-5 col-sm-12">
-                                            <input type="text" class="form-control" name="dsEquipamento"
+                                            <input type="text" class="form-control" name="dsEquipamento" [disabled]="form.cdAtendimento"
                                                 [(ngModel)]="equipamento.dsEquipamento" style="display: inline-block;">
                                         </div>
                                         <div class="col-lg-5 col-md-5 col-sm-12">
                                             <mat-form-field style="width: 100%;">
                                                 <mat-label>Tipo</mat-label>
-                                                <mat-select [(ngModel)]="equipamento.dsTipo" name="tiposEquipamento">
+                                                <mat-select [disabled]="form.cdAtendimento" [(ngModel)]="equipamento.dsTipo" name="tiposEquipamento">
                                                     <mat-option *ngFor="let tipo of tiposEquipamento" [value]="tipo">
                                                         {{tipo}}
                                                     </mat-option>
                                                 </mat-select>
                                             </mat-form-field>
-                                            <!-- <select class="form-control" [(ngModel)]="equipamento.dsTipo"  name="dsTipo">
-                                                <option *ngFor="let tipo of tiposEquipamento" value="{{tipo}}"
-                                                    selected="{{tipo == 'GMG'}}" >
-                                                    {{tipo}}
-                                                </option>
-                                            </select> -->
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-sm-12">
 
-                                            <button title="Editar" style="float: right;" (click)="addEquipamento()"
-                                                class="btn btn-fill btn-info btn-simple btn-md"
-                                                [disabled]="!equipamento.dsEquipamento || !equipamento.dsTipo">
+                                            <button title="Editar" style="float: right;" (click)="addEquipamento()" [disabled]="form.cdAtendimento"
+                                                class="btn btn-fill btn-info btn-simple btn-md" [disabled]="!equipamento.dsEquipamento || !equipamento.dsTipo">
                                                 Adicionar
                                                 <i class="fa fa-plus"></i>
                                             </button>
@@ -164,12 +157,7 @@
 
                                                     <td class="td-actions text-right">
 
-                                                        <a rel="tooltip" title="Remove" (click)="deletarEquipamento(i)"
-                                                            class="btn btn-danger btn-fill btn-simple btn-md"
-                                                            [disabled]="form.cdAtendimento">
-                                                            Excluir
-                                                            <i class="fa fa-trash"></i>
-                                                        </a>
+                                                   
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -178,15 +166,59 @@
 
                                     <hr>
 
+                                    <h4>Técnicos <span style="color:red">*</span></h4>
+                                    <div class="row">
+                                        <div class="col-lg-10 col-md-10 col-sm-12">
+                                            <mat-form-field style="width: 100%;">
+                                                <mat-label>Técnico</mat-label>
+                                                <mat-select [(ngModel)]="tecnico" name="tecnicos">
+                                                    <mat-option *ngFor="let t of tecnicos" [value]="t">
+                                                        {{t.nmUser}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+
+                                            <button title="Editar" style="float: right;" (click)="addTecnico()" [disabled]="form.cdAtendimento"
+                                                class="btn btn-fill btn-info btn-simple btn-md" [disabled]="!tecnico">
+                                                Adicionar
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="content table-responsive table-full-width">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nome</th>
+                                                    <th></th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr *ngFor="let t of form.tecnicos; let i = index">
+                                                    <td><b>{{t.nmUser}}</b></td>
+                                                    
+                                                    <td class="td-actions text-right">
+
+                                                   
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <hr>
+
                                     <div>
 
-                                        <button class="btn btn-fill btn-theme" (click)="salvar($event)"
+                                        <button class="btn btn-fill btn-theme" (click)="salvar($event)" 
                                             style="margin-right: 10px;">Salvar&nbsp; <i class="fa fa-save"></i></button>
-                                        <button class="btn btn-fill btn-danger" [routerLink]="['/atendimento/detalhe']"
-                                            [queryParams]="{cdAtendimento: form.cdAtendimento}"
-                                             style="margin-right: 10px;">Gerar
-                                            Atendimento&nbsp; <i class="fa fa-file"></i></button>
-                                        <button class="btn btn-fill btn-theme" [routerLink]="['/chamado/consulta']">
+                                        <button class="btn btn-fill btn-theme" [routerLink]="['/atendimento/consulta']">
                                             Voltar&nbsp; <i class="fa fa-arrow-left"></i></button>
                                         <!-- <button class="btn btn-danger" style="margin-left: 5px;" value="0"
                                         (click)="mudarStatusEmpresa($event)"><i

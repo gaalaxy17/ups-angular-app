@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ChamadoService } from 'app/services/chamado.service';
 
 @Component({
-  selector: 'app-chamado-consulta',
-  templateUrl: './chamado-consulta.component.html',
-  styleUrls: ['./chamado-consulta.component.css']
+  selector: 'app-atendimento-consulta',
+  templateUrl: './atendimento-consulta.component.html',
+  styleUrls: ['./atendimento-consulta.component.css']
 })
-export class ChamadoConsultaComponent implements OnInit {
+export class AtendimentoConsultaComponent implements OnInit {
 
 
   public page = 1;
