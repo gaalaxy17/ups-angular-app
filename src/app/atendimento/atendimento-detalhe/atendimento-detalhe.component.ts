@@ -173,7 +173,7 @@ export class AtendimentoDetalheComponent implements OnInit {
     this.chamadoFormSubmitted = true;
 
     if (
-      this.form.cdEmpresa && this.form.cdUnidade && this.form.cdTipoAtendimento && this.form.dsDescricao && this.form.equipamentos.length > 0 && this.form.tecnicos.length > 0 && this.form.dtAtendimento
+      this.form.cdEmpresa && this.form.cdUnidade && this.form.cdTipoAtendimento && this.form.dsDescricao && this.form.equipamentos.length > 0 && this.form.tecnicos.length > 0 && this.form.dtAtendimento && this.form.hrAtendimento
     ) {
 
       console.log(this.form);
@@ -206,6 +206,13 @@ export class AtendimentoDetalheComponent implements OnInit {
       }
 
       this.carregarUnidades();
+    })
+  }
+
+  confirmarAtendimento(){
+    this.atendimentoService.confirmar(this.form.cdAtendimento).then((results)=>{
+      this.notifier.notify("success", "Atendimento confirmado com sucesso!");
+      this.detalhar();
     })
   }
 

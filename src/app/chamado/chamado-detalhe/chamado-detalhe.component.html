@@ -183,7 +183,7 @@
                                         <button class="btn btn-fill btn-theme" (click)="salvar($event)"
                                             style="margin-right: 10px;">Salvar&nbsp; <i class="fa fa-save"></i></button>
                                         <button class="btn btn-fill btn-danger" [routerLink]="['/atendimento/detalhe']"
-                                            [queryParams]="{cdAtendimento: form.cdAtendimento}"
+                                            [queryParams]="{cdAtendimento: form.cdAtendimento}" [disabled]="form.stStatus != 'chamado'"
                                              style="margin-right: 10px;">Gerar
                                             Atendimento&nbsp; <i class="fa fa-file"></i></button>
                                         <button class="btn btn-fill btn-theme" [routerLink]="['/chamado/consulta']">

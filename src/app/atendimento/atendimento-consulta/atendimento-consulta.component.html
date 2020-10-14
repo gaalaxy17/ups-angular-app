@@ -58,8 +58,41 @@
                                             </mat-form-field>
                                         </td>
                                     </tr>
+                                    <tr height="50px">
+                                        <td> <label for="company"><b>Técnico</b></label>
+                                        </td>
+                                        <td>
+                                            <mat-form-field style="width: 100%;">
+                                                <mat-select name="cdLoginTecnico" [(ngModel)]="filtro.cdLoginTecnico">
+                                                    <mat-option *ngFor="let tec of tecnicos" [value]="tec.cdLogin">
+                                                        {{tec.nmUser}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <tr height="50px">
+                                        <td> <label for="company"><b>Status</b></label>
+                                        </td>
+                                        <td>
+                                            <mat-form-field style="width: 100%;">
+                                                <mat-select name="cdLoginTecnico" [(ngModel)]="filtro.stStatus">
+                                                    <mat-option value="atendimento_pendente_confirmacao"
+                                                        [selected]="true">
+                                                        Aguardando Confirmação
+                                                    </mat-option>
+                                                    <mat-option value="atendimento_em_aberto">
+                                                        Em Aberto
+                                                    </mat-option>
+                                                    <mat-option value="atendimento_finalizado">
+                                                        Finalizado
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
                                     <tr>
-                                        <td> <label for="company" class="control-label">Periodo Criação</label>
+                                        <td> <label for="company" class="control-label"><b>Periodo Criação</b></label>
                                         </td>
                                         <td>
                                             <mat-form-field style="margin-right: 20px;">
@@ -80,6 +113,33 @@
                                             </mat-form-field>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td> <label for="company" class="control-label"><b>Periodo
+                                                    Atendimento</b></label>
+                                        </td>
+                                        <td>
+                                            <mat-form-field style="margin-right: 20px;">
+                                                <mat-label>De</mat-label>
+                                                <input matInput name="dtPeriodoAtendimentoDe"
+                                                    (click)="dtPeriodoAtendimentoDe.open()"
+                                                    [(ngModel)]="filtro.dtFiltroAtendimentoDe"
+                                                    [matDatepicker]="dtPeriodoAtendimentoDe">
+                                                <mat-datepicker-toggle matSuffix [for]="dtPeriodoAtendimentoDe">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #dtPeriodoAtendimentoDe></mat-datepicker>
+                                            </mat-form-field>
+                                            <mat-form-field>
+                                                <mat-label>Até</mat-label>
+                                                <input matInput name="dtPeriodoAtendimentoAte"
+                                                    (click)="dtPeriodoAtendimentoAte.open()"
+                                                    [(ngModel)]="filtro.dtFiltroAtendimentoAte"
+                                                    [matDatepicker]="dtPeriodoAtendimentoAte">
+                                                <mat-datepicker-toggle matSuffix [for]="dtPeriodoAtendimentoAte">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #dtPeriodoAtendimentoAte></mat-datepicker>
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <hr><br>
@@ -88,8 +148,10 @@
                                         class="fa fa-search"></i>&nbsp;Buscar</button>
                                 <!-- <button class="btn btn-fill btn-theme" [routerLink]="['/chamado/detalhe']"
                                     [queryParams]="{new: 1}"><i class="fa fa-file"></i>&nbsp;Novo</button> -->
-                                <button class="btn btn-fill btn-theme" (click)="limpar()"
-                                    >Limpar</button>
+                                <button class="btn btn-fill btn-primary" (click)="confirmarSelecionados($event)"
+                                    style="margin-right: 10px;">Confirmar Selecionados&nbsp;<i class="fa fa-check"></i></button>
+                                <button class="btn btn-fill btn-theme" (click)="limpar()">Limpar</button>
+
                             </div>
                         </div>
 
@@ -100,29 +162,42 @@
                         <table class="table table-striped">
                             <thead style="background: #24292e; color: white;">
                                 <tr>
+                                    <th style="padding: 15px; color: white;"></th>
                                     <th style="padding: 15px; color: white;">ID</th>
                                     <th style="padding: 15px; color: white;">Dt. Criação</th>
+                                    <th style="padding: 15px; color: white;">Dt. Atendimento</th>
                                     <th style="padding: 15px; color: white;">Empresa</th>
                                     <th style="padding: 15px; color: white;">Unidade</th>
                                     <th style="padding: 15px; color: white;">Tipo</th>
+                                    <th style="padding: 15px; color: white;">Técnicos</th>
                                     <th style="padding: 15px; color: white;">Responsável</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr
-                                    *ngFor="let chamado of chamados  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
-                                    <td>{{chamado.cdAtendimento}}</td>
+                                    *ngFor="let atendimento of atendimentos  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                                    <td><input *ngIf="atendimento.stStatus == 'atendimento_pendente_confirmacao'" type="checkbox" class="checkbox" value=true
+                                            [(ngModel)]="atendimento.fgChecked" data-toggle="checkbox"></td>
+                                    <td>{{atendimento.cdAtendimento}}</td>
                                     <td>
-                                        <span>{{chamado.dtCriacao | date:'dd/MM/yyyy' }}</span>
+                                        <span>{{atendimento.dtCriacao | date:'dd/MM/yyyy' }}</span>
                                     </td>
-                                    <td><b>{{chamado.nmEmpresa}}</b></td>
-                                    <td><b>{{chamado.nmUnidade}}</b></td>
-                                    <td>{{chamado.dsTipoAtendimento}}</td>
-                                    <td>{{chamado.dsUserChamado}}</td>
                                     <td>
-                                        <button class="btn btn-theme" [routerLink]="['/chamado/detalhe']"
-                                            [queryParams]="{cdAtendimento: chamado.cdAtendimento}">Detalhes</button>
+                                        <span>{{atendimento.dtAtendimento | date:'dd/MM/yyyy' }}</span>
+                                    </td>
+                                    <td><b>{{atendimento.nmEmpresa}}</b></td>
+                                    <td><b>{{atendimento.nmUnidade}}</b></td>
+                                    <td>{{atendimento.dsTipoAtendimento}}</td>
+                                    <td>
+                                        <span *ngFor="let tecnico of atendimento.tecnicos">{{tecnico}} <br></span>
+                                    </td>
+                                    <td><span><b>Chamado aberto por:</b> {{atendimento.dsUserChamado}}</span> <br>
+                                        <span><b>Atendimento aberto por:</b> {{atendimento.dsUserAtendimento}}</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-theme" [routerLink]="['/atendimento/detalhe']"
+                                            [queryParams]="{cdAtendimento: atendimento.cdAtendimento}">Detalhes</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -130,8 +205,8 @@
                     </div>
                 </div>
                 <ngb-pagination style="float: right; margin-right: 25px;" [(page)]="page" [pageSize]="pageSize"
-                    [collectionSize]="chamados.length" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
-                    *ngIf="chamados.length > 0">
+                    [collectionSize]="atendimentos.length" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
+                    *ngIf="atendimentos.length > 0">
                 </ngb-pagination>
 
             </div>

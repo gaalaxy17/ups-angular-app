@@ -52,8 +52,8 @@
                                             [class]="{'input-error': chamadoFormSubmitted && !form.cdEmpresa}">
                                             <mat-form-field appearance="fill" style="width: 100%;">
                                                 <mat-label>Empresa <span style="color:red">*</span></mat-label>
-                                                <mat-select (selectionChange)="carregarUnidades()" name="cdEmpresa" [disabled]="form.cdAtendimento"
-                                                    [(ngModel)]="form.cdEmpresa">
+                                                <mat-select (selectionChange)="carregarUnidades()" name="cdEmpresa"
+                                                    [disabled]="form.cdAtendimento" [(ngModel)]="form.cdEmpresa">
                                                     <mat-option *ngFor="let e of empresas" [value]="e.cdEmpresa">
                                                         {{e.nmEmpresa}}
                                                     </mat-option>
@@ -64,7 +64,8 @@
                                             [class]="{'input-error': chamadoFormSubmitted && !form.cdUnidade}">
                                             <mat-form-field appearance="fill" style="width: 100%;">
                                                 <mat-label>Unidade <span style="color:red">*</span></mat-label>
-                                                <mat-select [(ngModel)]="form.cdUnidade" name="cdUnidade" [disabled]="form.cdAtendimento">
+                                                <mat-select [(ngModel)]="form.cdUnidade" name="cdUnidade"
+                                                    [disabled]="form.cdAtendimento">
                                                     <mat-option *ngFor="let u of unidades" [value]="u.cdUnidade">
                                                         {{u.nmUnidade}}
                                                     </mat-option>
@@ -77,7 +78,10 @@
                                             [class]="{'input-error': chamadoFormSubmitted && !form.cdTipoAtendimento}">
                                             <mat-form-field appearance="fill" style="width: 100%;">
                                                 <mat-label>Tipo Atendimento <span style="color:red">*</span></mat-label>
-                                                <mat-select (selectionChange)="carregarEquipamentos()" name="cdTipoAtendimento" [disabled]="form.cdAtendimento"  [(ngModel)]="form.cdTipoAtendimento">
+                                                <mat-select (selectionChange)="carregarEquipamentos()"
+                                                    name="cdTipoAtendimento"
+                                                    [disabled]="form.cdAtendimento && form.stStatus == 'chamado'"
+                                                    [(ngModel)]="form.cdTipoAtendimento">
                                                     <mat-option *ngFor="let t of tiposAtendimento"
                                                         [value]="t.cdTipoAtendimento">
                                                         {{t.dsTipoAtendimento}}
@@ -87,25 +91,53 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-lg-12 col-md-12 col-sm-12"
+                                        <div class="form-group col-lg-10 col-md-10 col-sm-12"
                                             [class]="{'input-error': chamadoFormSubmitted && !form.cdTipoAtendimento}">
                                             <mat-form-field appearance="fill" style="width: 100%;">
                                                 <mat-label>Data Atendimento <span style="color:red">*</span></mat-label>
-                                                <input matInput name="dtAtendimento" (click)="dtAtendimento.open()" readonly
-                                                    [(ngModel)]="form.dtAtendimento" [matDatepicker]="dtAtendimento">
+                                                <input matInput name="dtAtendimento" (click)="dtAtendimento.open()"
+                                                    readonly [(ngModel)]="form.dtAtendimento"
+                                                    [matDatepicker]="dtAtendimento">
                                                 <mat-datepicker-toggle matSuffix [for]="dtAtendimento">
                                                 </mat-datepicker-toggle>
                                                 <mat-datepicker #dtAtendimento></mat-datepicker>
                                             </mat-form-field>
                                         </div>
+                                        <div class="form-group col-lg-2 col-md-2 col-sm-12"
+                                            [class]="{'input-error': chamadoFormSubmitted && !form.hrAtendimento}">
+                                            <mat-form-field appearance="fill" style="width: 100%;" class="example-full-width">
+                                                <mat-label>Horário Atendimento <span style="color:red">*</span></mat-label>
+                                                <input matInput  name="hrAtendimento"
+                                                    [disabled]="form.cdAtendimento && form.stStatus == 'chamado'"
+                                                    mask="00:00" [(ngModel)]="form.hrAtendimento">
+                                              </mat-form-field>
+                                        </div>
                                     </div>
+
+
+
 
                                     <!-- <hr> -->
                                     <h4>Descrição do Serviço <span style="color:red">*</span></h4>
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
-                                            <textarea class="form-control" type="text" name="dsDescricao" [disabled]="form.cdAtendimento"
+                                            <textarea class="form-control" type="text" name="dsDescricao"
+                                                [disabled]="form.cdAtendimento && form.stStatus == 'chamado'"
                                                 [(ngModel)]="form.dsDescricao"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- <hr> -->
+                                    <h4>Status <span style="color:red">*</span></h4>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <input *ngIf="form.stStatus == 'atendimento_pendente_confirmacao'"
+                                                value='Pendente Confirmação' class="form-control" type="text"
+                                                name="dsDescricao" [disabled]="true">
+                                            <input *ngIf="form.stStatus == 'atendimento_em_aberto'" value='Em Aberto'
+                                                class="form-control" type="text" name="dsDescricao" [disabled]="true">
+                                            <input *ngIf="form.stStatus == 'atendimento_finalizado'" value='Finalizado'
+                                                class="form-control" type="text" name="dsDescricao" [disabled]="true">
                                         </div>
                                     </div>
 
@@ -114,13 +146,16 @@
                                     <h4>Equipamentos <span *ngIf="!form.cdAtendimento" style="color:red">*</span></h4>
                                     <div class="row" *ngIf="!form.cdAtendimento">
                                         <div class="col-lg-5 col-md-5 col-sm-12">
-                                            <input type="text" class="form-control" name="dsEquipamento" [disabled]="form.cdAtendimento"
+                                            <input type="text" class="form-control" name="dsEquipamento"
+                                                [disabled]="form.cdAtendimento && form.stStatus == 'chamado'"
                                                 [(ngModel)]="equipamento.dsEquipamento" style="display: inline-block;">
                                         </div>
                                         <div class="col-lg-5 col-md-5 col-sm-12">
                                             <mat-form-field style="width: 100%;">
                                                 <mat-label>Tipo</mat-label>
-                                                <mat-select [disabled]="form.cdAtendimento" [(ngModel)]="equipamento.dsTipo" name="tiposEquipamento">
+                                                <mat-select
+                                                    [disabled]="form.cdAtendimento && form.stStatus == 'chamado'"
+                                                    [(ngModel)]="equipamento.dsTipo" name="tiposEquipamento">
                                                     <mat-option *ngFor="let tipo of tiposEquipamento" [value]="tipo">
                                                         {{tipo}}
                                                     </mat-option>
@@ -129,8 +164,10 @@
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-sm-12">
 
-                                            <button title="Editar" style="float: right;" (click)="addEquipamento()" [disabled]="form.cdAtendimento"
-                                                class="btn btn-fill btn-info btn-simple btn-md" [disabled]="!equipamento.dsEquipamento || !equipamento.dsTipo">
+                                            <button title="Editar" style="float: right;" (click)="addEquipamento()"
+                                                [disabled]="form.cdAtendimento && form.stStatus == 'chamado'"
+                                                class="btn btn-fill btn-info btn-simple btn-md"
+                                                [disabled]="!equipamento.dsEquipamento || !equipamento.dsTipo">
                                                 Adicionar
                                                 <i class="fa fa-plus"></i>
                                             </button>
@@ -157,7 +194,7 @@
 
                                                     <td class="td-actions text-right">
 
-                                                   
+
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -180,7 +217,7 @@
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-sm-12">
 
-                                            <button title="Editar" style="float: right;" (click)="addTecnico()" [disabled]="form.cdAtendimento"
+                                            <button title="Editar" style="float: right;" (click)="addTecnico()"
                                                 class="btn btn-fill btn-info btn-simple btn-md" [disabled]="!tecnico">
                                                 Adicionar
                                                 <i class="fa fa-plus"></i>
@@ -202,22 +239,26 @@
 
                                                 <tr *ngFor="let t of form.tecnicos; let i = index">
                                                     <td><b>{{t.nmUser}}</b></td>
-                                                    
+
                                                     <td class="td-actions text-right">
 
-                                                   
+
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
-                                    
+
                                     <hr>
 
                                     <div>
 
-                                        <button class="btn btn-fill btn-theme" (click)="salvar($event)" 
+                                        <button class="btn btn-fill btn-theme" (click)="salvar($event)"
                                             style="margin-right: 10px;">Salvar&nbsp; <i class="fa fa-save"></i></button>
+                                        <button class="btn btn-fill btn-primary" (click)="confirmarAtendimento($event)"
+                                            *ngIf="form.stStatus == 'atendimento_pendente_confirmacao'"
+                                            style="margin-right: 10px;">Confirmar&nbsp; <i
+                                                class="fa fa-check"></i></button>
                                         <button class="btn btn-fill btn-theme" [routerLink]="['/atendimento/consulta']">
                                             Voltar&nbsp; <i class="fa fa-arrow-left"></i></button>
                                         <!-- <button class="btn btn-danger" style="margin-left: 5px;" value="0"

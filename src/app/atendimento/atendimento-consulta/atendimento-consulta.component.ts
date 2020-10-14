@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NotifierService } from 'angular-notifier';
+import { AtendimentoService } from 'app/services/atendimento.service';
 import { ChamadoService } from 'app/services/chamado.service';
 
 @Component({
@@ -17,15 +19,24 @@ export class AtendimentoConsultaComponent implements OnInit {
     nmEmpresa: null,
     cdTipoAtendimento: null,
     dtFiltroDe: null,
-    dtFiltroAte: null
+    dtFiltroAte: null,
+    cdLoginTecnico: null,
+    dtFiltroAtendimentoDe: null,
+    dtFiltroAtendimentoAte: null,
+    stStatus: "atendimento_pendente_confirmacao"
   }
 
-  chamados: any = [];
+  atendimentos: any = [];
   empresas: any = [];
   unidades: any = [];
   tiposAtendimento: any = [];
+  tecnicos: any = [];
 
-  constructor(private chamadoService: ChamadoService) { }
+  private readonly notifier: NotifierService;
+
+  constructor(private chamadoService: ChamadoService, private atendimentoService: AtendimentoService, private notifierService: NotifierService) { 
+    this.notifier = notifierService;
+  }
 
   ngOnInit(): void {
     this.carregarCombos();
@@ -36,14 +47,22 @@ export class AtendimentoConsultaComponent implements OnInit {
     this.chamadoService.carregarCombos().then((combos) => {
       this.tiposAtendimento = combos.tiposAtendimento;
       this.empresas = combos.empresas;
+      this.tecnicos = combos.tecnicos;
     })
   }
 
   buscar() {
 
-    this.chamadoService.buscar(this.filtro).then((results) => {
-      this.chamados = results;
-      console.log(results);
+    this.atendimentoService.buscar(this.filtro).then((atendimentos) => {
+      this.atendimentos = atendimentos;
+
+      if (atendimentos.length > 0) {
+        atendimentos.forEach((item, i) => {
+          item.fgChecked = false;
+        })
+      }
+
+      console.log(atendimentos);
     })
 
   }
@@ -54,7 +73,24 @@ export class AtendimentoConsultaComponent implements OnInit {
       nmEmpresa: null,
       cdTipoAtendimento: null,
       dtFiltroDe: null,
-      dtFiltroAte: null
+      dtFiltroAte: null,
+      cdLoginTecnico: null,
+      dtFiltroAtendimentoDe: null,
+      dtFiltroAtendimentoAte: null,
+      stStatus: "atendimento_pendente_confirmacao"
+    }
+  }
+
+  confirmarSelecionados() {
+    if (this.atendimentos.length > 0) {
+      this.atendimentos.forEach((item, i) => {
+        if (item.fgChecked) {
+          this.atendimentoService.confirmar(item.cdAtendimento).then((results) => {
+            console.log(results);
+          })
+        }
+      })
+      this.notifier.notify("success", "Atendimentos confirmado com sucesso!");
     }
   }
 
