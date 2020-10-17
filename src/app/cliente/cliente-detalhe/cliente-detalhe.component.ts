@@ -5,6 +5,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as uuid from 'uuid';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AtendimentoService } from 'app/services/atendimento.service';
 // import * as $ from 'jquery';
 
 declare var $: any;
@@ -69,7 +70,7 @@ export class ClienteDetalheComponent implements OnInit {
 
   private readonly notifier: NotifierService;
 
-  constructor(public clienteService: ClienteService, public notifierService: NotifierService, public modalService: NgbModal, public route: ActivatedRoute) {
+  constructor(public clienteService: ClienteService, public notifierService: NotifierService, public modalService: NgbModal, public route: ActivatedRoute, public atendimentoService: AtendimentoService) {
     this.notifier = notifierService;
   }
 
@@ -306,6 +307,12 @@ export class ClienteDetalheComponent implements OnInit {
     this.clienteService.mudarStatusUnidade(unidade.cdUnidade, 1).then((results) => {
       this.detalhar();
       console.log(results);
+    })
+  }
+
+  gerarAtendimentosContrato(unidade){
+    this.atendimentoService.gerarAtendimentosContrato(unidade.cdUnidade).then((results)=>{
+      this.notifier.notify("success", "Atendimentos gerados com sucesso.");
     })
   }
 

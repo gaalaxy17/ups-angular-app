@@ -82,7 +82,10 @@
                                                         Aguardando Confirmação
                                                     </mat-option>
                                                     <mat-option value="atendimento_em_aberto">
-                                                        Em Aberto
+                                                        Confirmado
+                                                    </mat-option>
+                                                    <mat-option value="atendimento_iniciado">
+                                                        Iniciado
                                                     </mat-option>
                                                     <mat-option value="atendimento_finalizado">
                                                         Finalizado
@@ -149,8 +152,8 @@
                                 <!-- <button class="btn btn-fill btn-theme" [routerLink]="['/chamado/detalhe']"
                                     [queryParams]="{new: 1}"><i class="fa fa-file"></i>&nbsp;Novo</button> -->
                                 <button class="btn btn-fill btn-primary" (click)="confirmarSelecionados($event)"
-                                    style="margin-right: 10px;">Confirmar Selecionados&nbsp;<i class="fa fa-check"></i></button>
-                                <button class="btn btn-fill btn-theme" (click)="limpar()">Limpar</button>
+                                    style="margin-right: 5px;"><i class="fa fa-check"></i>&nbsp;Confirmar Selecionados</button>
+                                    <button class="btn btn-fill btn-theme" (click)="limpar()">Limpar</button>
 
                             </div>
                         </div>
@@ -171,6 +174,7 @@
                                     <th style="padding: 15px; color: white;">Tipo</th>
                                     <th style="padding: 15px; color: white;">Técnicos</th>
                                     <th style="padding: 15px; color: white;">Responsável</th>
+                                    <th style="padding: 15px; color: white;">Status</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -184,7 +188,7 @@
                                         <span>{{atendimento.dtCriacao | date:'dd/MM/yyyy' }}</span>
                                     </td>
                                     <td>
-                                        <span>{{atendimento.dtAtendimento | date:'dd/MM/yyyy' }}</span>
+                                        <span>{{atendimento.dtAtendimento | date:'dd/MM/yyyy HH:mm' }}</span>
                                     </td>
                                     <td><b>{{atendimento.nmEmpresa}}</b></td>
                                     <td><b>{{atendimento.nmUnidade}}</b></td>
@@ -194,6 +198,11 @@
                                     </td>
                                     <td><span><b>Chamado aberto por:</b> {{atendimento.dsUserChamado}}</span> <br>
                                         <span><b>Atendimento aberto por:</b> {{atendimento.dsUserAtendimento}}</span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="atendimento.stStatus == 'atendimento_pendente_confirmacao'"><b style="color: red;">Pendente Confirmação</b></span>
+                                        <span *ngIf="atendimento.stStatus == 'atendimento_em_aberto'"><b style="color: rgb(49, 8, 196);">Confirmado</b></span>
+                                        <span *ngIf="atendimento.stStatus == 'atendimento_finalizado'"><b style="color: green;">Finalizado</b></span>
                                     </td>
                                     <td>
                                         <button class="btn btn-theme" [routerLink]="['/atendimento/detalhe']"

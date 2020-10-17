@@ -87,6 +87,7 @@ export class AtendimentoConsultaComponent implements OnInit {
         if (item.fgChecked) {
           this.atendimentoService.confirmar(item.cdAtendimento).then((results) => {
             console.log(results);
+            this.buscar();
           })
         }
       })

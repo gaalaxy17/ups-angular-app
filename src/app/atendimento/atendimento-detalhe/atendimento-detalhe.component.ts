@@ -216,4 +216,8 @@ export class AtendimentoDetalheComponent implements OnInit {
     })
   }
 
+  removerTecnico(i){
+    this.form.tecnicos.splice(i,1);
+  }
+
 }

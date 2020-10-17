@@ -157,6 +157,13 @@
                                                         <span *ngIf="u.fgClienteContrato == 1">Sim</span>
                                                     </td>
                                                     <td class="td-actions text-right">
+
+                                                        <button rel="tooltip" title="Editar" style="margin-right: 5px;"
+                                                            (click)="gerarAtendimentosContrato(u)"
+                                                            class="btn btn-fill btn-primary btn-simple btn-md">
+                                                            Gerar Atendimentos de Contrato
+                                                        </button>
+
                                                         <button rel="tooltip" title="Editar" style="margin-right: 5px;"
                                                             (click)="editarUnidade(u)"
                                                             data-target="#modalDetalheUnidade" data-toggle="modal"
