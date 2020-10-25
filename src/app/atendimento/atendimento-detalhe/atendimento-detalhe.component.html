@@ -110,7 +110,6 @@
                                                 <mat-label>Horário Atendimento <span style="color:red">*</span>
                                                 </mat-label>
                                                 <input matInput name="hrAtendimento"
-                                                    [disabled]="form.cdAtendimento && form.stStatus == 'chamado'"
                                                     [dropSpecialCharacters]="false" mask="00:00"
                                                     [(ngModel)]="form.hrAtendimento">
                                             </mat-form-field>
@@ -125,15 +124,14 @@
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <textarea class="form-control" type="text" name="dsDescricao"
-                                                [disabled]="form.cdAtendimento && form.stStatus == 'chamado'"
                                                 [(ngModel)]="form.dsDescricao"></textarea>
                                         </div>
                                     </div>
 
                                     <!-- <hr> -->
-                                    <h4>Status <span style="color:red">*</span></h4>
                                     <div class="row">
-                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <div class="col-lg-10 col-md-10 col-sm-12">
+                                            <h4>Status </h4>
                                             <input *ngIf="form.stStatus == 'atendimento_pendente_confirmacao'"
                                                 value='Pendente Confirmação' class="form-control" type="text"
                                                 name="dsDescricao" [disabled]="true">
@@ -141,8 +139,14 @@
                                                 class="form-control" type="text" name="dsDescricao" [disabled]="true">
                                             <input *ngIf="form.stStatus == 'atendimento_iniciado'" value='Iniciado'
                                                 class="form-control" type="text" name="dsDescricao" [disabled]="true">
-                                            <input *ngIf="form.stStatus == 'atendimento_finalizado'" value='Finalizado'
+                                            <input *ngIf="form.stStatus == 'atendimento_concluido'" value='Finalizado'
                                                 class="form-control" type="text" name="dsDescricao" [disabled]="true">
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12">
+                                            <h4>Nº RAT</h4>
+                                            <input 
+                                                value='{{form.nrRat}}' class="form-control" type="text"
+                                                name="nrRat" [disabled]="true">
                                         </div>
                                     </div>
 

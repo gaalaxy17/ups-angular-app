@@ -34,7 +34,7 @@ export class AtendimentoConsultaComponent implements OnInit {
 
   private readonly notifier: NotifierService;
 
-  constructor(private chamadoService: ChamadoService, private atendimentoService: AtendimentoService, private notifierService: NotifierService) { 
+  constructor(private chamadoService: ChamadoService, private atendimentoService: AtendimentoService, private notifierService: NotifierService) {
     this.notifier = notifierService;
   }
 
@@ -82,16 +82,24 @@ export class AtendimentoConsultaComponent implements OnInit {
   }
 
   confirmarSelecionados() {
+
+    var success = false;
+
     if (this.atendimentos.length > 0) {
       this.atendimentos.forEach((item, i) => {
         if (item.fgChecked) {
           this.atendimentoService.confirmar(item.cdAtendimento).then((results) => {
             console.log(results);
+            success = true;
             this.buscar();
           })
         }
       })
-      this.notifier.notify("success", "Atendimentos confirmado com sucesso!");
+
+      if (success) {
+        this.notifier.notify("success", "Atendimentos confirmado com sucesso!");
+
+      }
     }
   }
 

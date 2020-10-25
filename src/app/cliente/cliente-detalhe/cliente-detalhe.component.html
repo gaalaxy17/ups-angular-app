@@ -158,10 +158,10 @@
                                                     </td>
                                                     <td class="td-actions text-right">
 
-                                                        <button rel="tooltip" title="Editar" style="margin-right: 5px;"
+                                                        <button  *ngIf="u.fgClienteContrato" [disabled]="!u.nrDuracaoContrato || !u.dtInicioContrato" rel="tooltip" title="Editar" style="margin-right: 5px;"
                                                             (click)="gerarAtendimentosContrato(u)"
                                                             class="btn btn-fill btn-primary btn-simple btn-md">
-                                                            Gerar Atendimentos de Contrato
+                                                            Gerar Atendimentos
                                                         </button>
 
                                                         <button rel="tooltip" title="Editar" style="margin-right: 5px;"
@@ -362,14 +362,14 @@
 
                             <select class="form-control" [(ngModel)]="equipamento.dsTipo">
                                 <option *ngFor="let tipo of tiposEquipamento" value="{{tipo}}"
-                                    selected="{{tipo == 'GMG'}}" [disabled]="!item.fgClienteContrato">{{tipo}}
+                                    [disabled]="!item.fgClienteContrato">{{tipo}}
                                 </option>
                             </select>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-12">
 
-                            <button title="Editar" style="float: right;" (click)="addEquipamento(item)"
-                                [disabled]="!item.fgClienteContrato" class="btn btn-fill btn-info btn-simple btn-md">
+                            <button title="Editar" style="float: right;" (click)="addEquipamento(item)" 
+                                [disabled]="(!item.fgClienteContrato) || (!equipamento.dsEquipamento || !equipamento.dsTipo)" class="btn btn-fill btn-info btn-simple btn-md">
                                 Adicionar
                                 <i class="fa fa-plus"></i>
                             </button>
@@ -414,7 +414,7 @@
                     <button type="button" class="btn btn-fill btn-secondary" data-dismiss="modal">Fechar</button>
                     <button type="button" class="btn btn-fill btn-danger" [disabled]="(!item.fgClienteContrato && (!item.nmUnidade || !item.nmContatoCli || !item.nrTelefone || !item.nrCep 
                     || !item.nmRua || !item.nrNumero || !item.nmBairro 
-                    || !item.nmCidade || !item.nmEstado) || (item.fgClienteContrato && (!item.nmUnidade || !item.nmContatoCli || !item.nrTelefone || !item.nrCep 
+                    || !item.nmCidade || !item.nmEstado) || (item.fgClienteContrato && (!item.nmUnidade || !item.nmContatoCli || !item.nrTelefone || !item.nrCep || item.equipamentos.length == 0
                     || !item.nmRua || !item.nrNumero || !item.nmBairro 
                     || !item.nmCidade || !item.nmEstado || !item.nrDuracaoContrato || !item.dtInicioContrato)))" (click)="salvarUnidade()">Salvar</button>
                 </div>

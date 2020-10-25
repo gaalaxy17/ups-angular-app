@@ -210,10 +210,34 @@ export class AtendimentoDetalheComponent implements OnInit {
   }
 
   confirmarAtendimento(){
-    this.atendimentoService.confirmar(this.form.cdAtendimento).then((results)=>{
-      this.notifier.notify("success", "Atendimento confirmado com sucesso!");
-      this.detalhar();
-    })
+
+    this.chamadoFormSubmitted = true;
+
+    if (
+      this.form.cdEmpresa && this.form.cdUnidade && this.form.cdTipoAtendimento && this.form.dsDescricao && this.form.equipamentos.length > 0 && this.form.tecnicos.length > 0 && this.form.dtAtendimento && this.form.hrAtendimento
+    ) {
+
+      console.log(this.form);
+
+      this.atendimentoService.salvar(this.form).then((results) => {
+
+        if (results) {
+          this.form.cdAtendimento = results.cdAtendimento;
+        }
+
+        // this.notifier.notify("success", "Dados salvos com sucesso.");
+
+        this.atendimentoService.confirmar(this.form.cdAtendimento).then((results)=>{
+          this.notifier.notify("success", "Atendimento confirmado com sucesso!");
+          this.detalhar();
+        })
+
+      })
+    }
+    else {
+      this.notifier.notify("error", "Há campos de preenchimento obrigatório em branco");
+    }
+
   }
 
   removerTecnico(i){

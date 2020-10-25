@@ -17,7 +17,7 @@ export class ClienteConsultaComponent implements OnInit {
     nrDocumento: null
   }
 
-  clientes: [];
+  public clientes: [];
 
   constructor(public clienteService: ClienteService) { }
 

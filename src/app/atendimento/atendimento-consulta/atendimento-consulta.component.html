@@ -87,7 +87,7 @@
                                                     <mat-option value="atendimento_iniciado">
                                                         Iniciado
                                                     </mat-option>
-                                                    <mat-option value="atendimento_finalizado">
+                                                    <mat-option value="atendimento_concluido">
                                                         Finalizado
                                                     </mat-option>
                                                 </mat-select>
@@ -151,7 +151,7 @@
                                         class="fa fa-search"></i>&nbsp;Buscar</button>
                                 <!-- <button class="btn btn-fill btn-theme" [routerLink]="['/chamado/detalhe']"
                                     [queryParams]="{new: 1}"><i class="fa fa-file"></i>&nbsp;Novo</button> -->
-                                <button class="btn btn-fill btn-primary" (click)="confirmarSelecionados($event)"
+                                <button class="btn btn-fill btn-primary" (click)="confirmarSelecionados($event)" 
                                     style="margin-right: 5px;"><i class="fa fa-check"></i>&nbsp;Confirmar Selecionados</button>
                                     <button class="btn btn-fill btn-theme" (click)="limpar()">Limpar</button>
 
@@ -167,6 +167,7 @@
                                 <tr>
                                     <th style="padding: 15px; color: white;"></th>
                                     <th style="padding: 15px; color: white;">ID</th>
+                                    <th style="padding: 15px; color: white;">RAT</th>
                                     <th style="padding: 15px; color: white;">Dt. Criação</th>
                                     <th style="padding: 15px; color: white;">Dt. Atendimento</th>
                                     <th style="padding: 15px; color: white;">Empresa</th>
@@ -184,6 +185,7 @@
                                     <td><input *ngIf="atendimento.stStatus == 'atendimento_pendente_confirmacao'" type="checkbox" class="checkbox" value=true
                                             [(ngModel)]="atendimento.fgChecked" data-toggle="checkbox"></td>
                                     <td>{{atendimento.cdAtendimento}}</td>
+                                    <td>{{atendimento.nrRat}}</td>
                                     <td>
                                         <span>{{atendimento.dtCriacao | date:'dd/MM/yyyy' }}</span>
                                     </td>
@@ -202,7 +204,8 @@
                                     <td>
                                         <span *ngIf="atendimento.stStatus == 'atendimento_pendente_confirmacao'"><b style="color: red;">Pendente Confirmação</b></span>
                                         <span *ngIf="atendimento.stStatus == 'atendimento_em_aberto'"><b style="color: rgb(49, 8, 196);">Confirmado</b></span>
-                                        <span *ngIf="atendimento.stStatus == 'atendimento_finalizado'"><b style="color: green;">Finalizado</b></span>
+                                        <span *ngIf="atendimento.stStatus == 'atendimento_iniciado'"><b style="color: orange;">Iniciado</b></span>
+                                        <span *ngIf="atendimento.stStatus == 'atendimento_concluido'"><b style="color: green;">Finalizado</b></span>
                                     </td>
                                     <td>
                                         <button class="btn btn-theme" [routerLink]="['/atendimento/detalhe']"

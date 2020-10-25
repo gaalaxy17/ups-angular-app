@@ -51,7 +51,8 @@ export class ClienteDetalheComponent implements OnInit {
     dtInicioContrato: null,
     nrDiaPrevisto: null,
     tecnicoPrevisto: null,
-    fgAtivo: true
+    fgAtivo: true,
+    equipamentos: []
   }
 
   equipamento: any = {
@@ -182,7 +183,7 @@ export class ClienteDetalheComponent implements OnInit {
       nrDuracaoContrato: null,
       nrDiaPrevisto: null,
       tecnicoPrevisto: null,
-      fgAtivo: null,
+      fgAtivo: true,
       equipamentos: [],
       uuid: id
     }
@@ -214,27 +215,55 @@ export class ClienteDetalheComponent implements OnInit {
         let foundItem = false;
 
         this.form.unidades.forEach((item, i) => {
-          if (item.uuid == this.item.uuid) {
+          if (item.uuid && this.item.uuid) {
 
-            foundItem = true;
+            if (item.uuid == this.item.uuid) {
 
-            item.nmUnidade = this.item.nmUnidade;
-            item.nrCep = this.item.nrCep;
-            item.nmRua = this.item.nmRua;
-            item.nrNumero = this.item.nrNumero
-            item.dsComplemento = this.item.dsComplemento
-            item.nmBairro = this.item.nmBairro
-            item.nmEstado = this.item.nmEstado
-            item.nmCidade = this.item.nmCidade
-            item.nmContatoCli = this.item.nmContatoCli
-            item.nrTelefone = this.item.nrTelefone
-            item.nrCelular = this.item.nrCelular
-            item.fgClienteContrato = this.item.fgClienteContrato
-            item.nrDuracaoContrato = this.item.nrDuracaoContrato
-            item.nrDiaPrevisto = this.item.nrDiaPrevisto
-            item.tecnicoPrevisto = this.item.tecnicoPrevisto
-            item.fgAtivo = this.item.fgAtivo
-            item.equipamentos = this.item.equipamentos;
+              foundItem = true;
+
+              item.nmUnidade = this.item.nmUnidade;
+              item.nrCep = this.item.nrCep;
+              item.nmRua = this.item.nmRua;
+              item.nrNumero = this.item.nrNumero
+              item.dsComplemento = this.item.dsComplemento
+              item.nmBairro = this.item.nmBairro
+              item.nmEstado = this.item.nmEstado
+              item.nmCidade = this.item.nmCidade
+              item.nmContatoCli = this.item.nmContatoCli
+              item.nrTelefone = this.item.nrTelefone
+              item.nrCelular = this.item.nrCelular
+              item.fgClienteContrato = this.item.fgClienteContrato
+              item.nrDuracaoContrato = this.item.nrDuracaoContrato
+              item.nrDiaPrevisto = this.item.nrDiaPrevisto
+              item.tecnicoPrevisto = this.item.tecnicoPrevisto
+              item.fgAtivo = this.item.fgAtivo
+              item.equipamentos = this.item.equipamentos;
+            }
+
+          }
+
+          else {
+            if (item.cdUnidade == this.item.cdUnidade) {
+              foundItem = true;
+
+              item.nmUnidade = this.item.nmUnidade;
+              item.nrCep = this.item.nrCep;
+              item.nmRua = this.item.nmRua;
+              item.nrNumero = this.item.nrNumero
+              item.dsComplemento = this.item.dsComplemento
+              item.nmBairro = this.item.nmBairro
+              item.nmEstado = this.item.nmEstado
+              item.nmCidade = this.item.nmCidade
+              item.nmContatoCli = this.item.nmContatoCli
+              item.nrTelefone = this.item.nrTelefone
+              item.nrCelular = this.item.nrCelular
+              item.fgClienteContrato = this.item.fgClienteContrato
+              item.nrDuracaoContrato = this.item.nrDuracaoContrato
+              item.nrDiaPrevisto = this.item.nrDiaPrevisto
+              item.tecnicoPrevisto = this.item.tecnicoPrevisto
+              item.fgAtivo = this.item.fgAtivo
+              item.equipamentos = this.item.equipamentos;
+            }
           }
 
         })
@@ -268,11 +297,11 @@ export class ClienteDetalheComponent implements OnInit {
     this.empresaFormSubmitted = true;
 
     if (
-      this.form.nmEmpresa && this.form.nrDocumento && this.form.nrCep 
-      && this.form.nmRua && this.form.nrNumero && this.form.nmBairro 
+      this.form.nmEmpresa && this.form.nrDocumento && this.form.nrCep
+      && this.form.nmRua && this.form.nrNumero && this.form.nmBairro
       && this.form.nmCidade && this.form.nmEstado
-      
-      ) {
+
+    ) {
 
       this.clienteService.salvar(this.form).then((results) => {
 
@@ -283,7 +312,7 @@ export class ClienteDetalheComponent implements OnInit {
         this.notifier.notify("success", "Dados salvos com sucesso.");
       })
     }
-    else{
+    else {
       this.notifier.notify("error", "Há campos de preenchimento obrigatório em branco");
     }
 
@@ -293,6 +322,7 @@ export class ClienteDetalheComponent implements OnInit {
   detalhar() {
     this.clienteService.detalhar(this.cdCliente).then((empresa) => {
       this.form = empresa;
+      console.log(empresa);
     })
   }
 
@@ -310,10 +340,35 @@ export class ClienteDetalheComponent implements OnInit {
     })
   }
 
-  gerarAtendimentosContrato(unidade){
-    this.atendimentoService.gerarAtendimentosContrato(unidade.cdUnidade).then((results)=>{
-      this.notifier.notify("success", "Atendimentos gerados com sucesso.");
-    })
+  gerarAtendimentosContrato(unidade) {
+
+    this.empresaFormSubmitted = true;
+
+    if (
+      this.form.nmEmpresa && this.form.nrDocumento && this.form.nrCep
+      && this.form.nmRua && this.form.nrNumero && this.form.nmBairro
+      && this.form.nmCidade && this.form.nmEstado
+
+    ) {
+
+      this.clienteService.salvar(this.form).then((results) => {
+
+        if (results) {
+          this.form.cdEmpresa = results.cdEmpresa;
+        }
+
+        this.atendimentoService.gerarAtendimentosContrato(unidade.cdUnidade).then((results) => {
+          this.notifier.notify("success", "Atendimentos gerados com sucesso.");
+        })
+
+        // this.notifier.notify("success", "Dados salvos com sucesso.");
+      })
+    }
+    else {
+      this.notifier.notify("error", "Há campos de preenchimento obrigatório em branco");
+    }
+
+
   }
 
 }
