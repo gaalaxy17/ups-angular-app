@@ -12,6 +12,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/cliente/consulta', title: 'Clientes',  icon:'pe-7s-portfolio', class: '' },
     { path: '/chamado/consulta', title: 'Chamados',  icon:'pe-7s-albums', class: '' },
     { path: '/atendimento/consulta', title: 'Atendimentos',  icon:'pe-7s-note2', class: '' },
+    { path: '/atendimento/tv', title: 'Atendimentos TV',  icon:'pe-7s-monitor', class: '' },
 ];
 
 @Component({

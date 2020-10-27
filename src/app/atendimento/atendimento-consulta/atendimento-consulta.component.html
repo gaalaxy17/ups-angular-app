@@ -151,9 +151,15 @@
                                         class="fa fa-search"></i>&nbsp;Buscar</button>
                                 <!-- <button class="btn btn-fill btn-theme" [routerLink]="['/chamado/detalhe']"
                                     [queryParams]="{new: 1}"><i class="fa fa-file"></i>&nbsp;Novo</button> -->
-                                <button class="btn btn-fill btn-primary" (click)="confirmarSelecionados($event)" 
-                                    style="margin-right: 5px;"><i class="fa fa-check"></i>&nbsp;Confirmar Selecionados</button>
-                                    <button class="btn btn-fill btn-theme" (click)="limpar()">Limpar</button>
+                                <button class="btn btn-fill btn-primary" (click)="confirmarSelecionados($event)"
+                                    style="margin-right: 5px;"><i class="fa fa-check"></i>&nbsp;Confirmar
+                                    Selecionados</button>
+                                <button class="btn btn-fill btn-primary" (click)="exportarDados()"
+                                    style="margin-right: 5px;"><i class="fa fa-file"></i>&nbsp;Exportar Dados</button>
+                                <button style="margin-right: 5px;" class="btn btn-fill btn-theme"
+                                    (click)="limpar()">Limpar</button>
+
+
 
                             </div>
                         </div>
@@ -182,7 +188,8 @@
                             <tbody>
                                 <tr
                                     *ngFor="let atendimento of atendimentos  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
-                                    <td><input *ngIf="atendimento.stStatus == 'atendimento_pendente_confirmacao'" type="checkbox" class="checkbox" value=true
+                                    <td><input *ngIf="atendimento.stStatus == 'atendimento_pendente_confirmacao'"
+                                            type="checkbox" class="checkbox" value=true
                                             [(ngModel)]="atendimento.fgChecked" data-toggle="checkbox"></td>
                                     <td>{{atendimento.cdAtendimento}}</td>
                                     <td>{{atendimento.nrRat}}</td>
@@ -202,10 +209,14 @@
                                         <span><b>Atendimento aberto por:</b> {{atendimento.dsUserAtendimento}}</span>
                                     </td>
                                     <td>
-                                        <span *ngIf="atendimento.stStatus == 'atendimento_pendente_confirmacao'"><b style="color: red;">Pendente Confirmação</b></span>
-                                        <span *ngIf="atendimento.stStatus == 'atendimento_em_aberto'"><b style="color: rgb(49, 8, 196);">Confirmado</b></span>
-                                        <span *ngIf="atendimento.stStatus == 'atendimento_iniciado'"><b style="color: orange;">Iniciado</b></span>
-                                        <span *ngIf="atendimento.stStatus == 'atendimento_concluido'"><b style="color: green;">Finalizado</b></span>
+                                        <span *ngIf="atendimento.stStatus == 'atendimento_pendente_confirmacao'"><b
+                                                style="color: red;">Pendente Confirmação</b></span>
+                                        <span *ngIf="atendimento.stStatus == 'atendimento_em_aberto'"><b
+                                                style="color: rgb(49, 8, 196);">Confirmado</b></span>
+                                        <span *ngIf="atendimento.stStatus == 'atendimento_iniciado'"><b
+                                                style="color: orange;">Iniciado</b></span>
+                                        <span *ngIf="atendimento.stStatus == 'atendimento_concluido'"><b
+                                                style="color: green;">Finalizado</b></span>
                                     </td>
                                     <td>
                                         <button class="btn btn-theme" [routerLink]="['/atendimento/detalhe']"

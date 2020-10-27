@@ -8,7 +8,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./cliente-consulta.component.css']
 })
 export class ClienteConsultaComponent implements OnInit {
-
+  
+  clientes:any = [];
   public page = 1;
   public pageSize = 10;
 
@@ -17,7 +18,6 @@ export class ClienteConsultaComponent implements OnInit {
     nrDocumento: null
   }
 
-  public clientes: [];
 
   constructor(public clienteService: ClienteService) { }
 

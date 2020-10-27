@@ -99,6 +99,7 @@ export class ClienteService {
   buscar(filtro): Promise<any> {
 
     this.spinner.show();
+    console.log(this.spinner);
 
     return new Promise(((resolve, reject) => {
       this.httpClient.post<any>(environment.API_ENDPOINT + "/empresa/buscar", filtro)

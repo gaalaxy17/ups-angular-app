@@ -20,8 +20,7 @@ import { AdminLayoutModule } from './layouts/admin-layout/admin-layout.module';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthInterceptor } from './commons/auth.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-
+import { AtendimentoTvComponent } from './atendimento-tv/atendimento-tv.component';
 
 registerLocaleData(localePt);
 
@@ -56,7 +55,8 @@ registerLocaleData(localePt);
   declarations: [
     AppComponent,
     LoginComponent,
-    AdminLayoutComponent
+    AdminLayoutComponent,
+    AtendimentoTvComponent
     
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
