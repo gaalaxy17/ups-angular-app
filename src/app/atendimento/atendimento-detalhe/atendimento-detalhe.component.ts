@@ -41,8 +41,9 @@ export class AtendimentoDetalheComponent implements OnInit {
   tecnico: any = null;
 
   tiposEquipamento = [
-    "GMG", "Nobreak"
+    "GMG", "Nobreak", "Infraestrutura"
   ]
+
 
   private readonly notifier: NotifierService;
 
@@ -121,15 +122,15 @@ export class AtendimentoDetalheComponent implements OnInit {
 
     if (this.form.tecnicos) {
       if (this.tecnico) {
-        if(this.form.tecnicos.length > 0){
-          this.form.tecnicos.forEach((item,i)=>{
-            if(item.cdLogin == this.tecnico.cdLogin){
+        if (this.form.tecnicos.length > 0) {
+          this.form.tecnicos.forEach((item, i) => {
+            if (item.cdLogin == this.tecnico.cdLogin) {
               hasFound = true;
             }
           })
         }
 
-        if(!hasFound){
+        if (!hasFound) {
           this.form.tecnicos.push(this.tecnico);
         }
 
@@ -197,11 +198,11 @@ export class AtendimentoDetalheComponent implements OnInit {
     this.chamadoService.detalhar(this.cdAtendimento).then((chamado) => {
       this.form = chamado;
 
-      if(!chamado.dtAtendimento){
+      if (!chamado.dtAtendimento) {
         this.form.dtAtendimento = null;
       }
 
-      if(!chamado.tecnicos){
+      if (!chamado.tecnicos) {
         this.form.tecnicos = [];
       }
 
@@ -209,7 +210,7 @@ export class AtendimentoDetalheComponent implements OnInit {
     })
   }
 
-  confirmarAtendimento(){
+  confirmarAtendimento() {
 
     this.chamadoFormSubmitted = true;
 
@@ -227,7 +228,7 @@ export class AtendimentoDetalheComponent implements OnInit {
 
         // this.notifier.notify("success", "Dados salvos com sucesso.");
 
-        this.atendimentoService.confirmar(this.form.cdAtendimento).then((results)=>{
+        this.atendimentoService.confirmar(this.form.cdAtendimento).then((results) => {
           this.notifier.notify("success", "Atendimento confirmado com sucesso!");
           this.detalhar();
         })
@@ -240,8 +241,8 @@ export class AtendimentoDetalheComponent implements OnInit {
 
   }
 
-  removerTecnico(i){
-    this.form.tecnicos.splice(i,1);
+  removerTecnico(i) {
+    this.form.tecnicos.splice(i, 1);
   }
 
 }

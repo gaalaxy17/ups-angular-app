@@ -109,9 +109,8 @@
                                                 class="example-full-width">
                                                 <mat-label>Horário Atendimento <span style="color:red">*</span>
                                                 </mat-label>
-                                                <input matInput name="hrAtendimento"
-                                                    [dropSpecialCharacters]="false" mask="00:00"
-                                                    [(ngModel)]="form.hrAtendimento">
+                                                <input matInput name="hrAtendimento" [dropSpecialCharacters]="false"
+                                                    mask="00:00" [(ngModel)]="form.hrAtendimento">
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -132,6 +131,8 @@
                                     <div class="row">
                                         <div class="col-lg-10 col-md-10 col-sm-12">
                                             <h4>Status </h4>
+                                            <input *ngIf="form.stStatus == 'chamado'" value='Chamado'
+                                                class="form-control" type="text" name="dsDescricao" [disabled]="true">
                                             <input *ngIf="form.stStatus == 'atendimento_pendente_confirmacao'"
                                                 value='Pendente Confirmação' class="form-control" type="text"
                                                 name="dsDescricao" [disabled]="true">
@@ -144,8 +145,30 @@
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-sm-12">
                                             <h4>Nº RAT</h4>
-                                            <input 
-                                                value='{{form.nrRat}}' class="form-control" type="text"
+                                            <input value='{{form.nrRat}}' class="form-control" type="text" name="nrRat"
+                                                [disabled]="true">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div  class="col-lg-3 col-md-3 col-sm-6">
+                                            <h4>Iniciado Por</h4>
+                                            <input value='{{form.iniciadoPor}}' class="form-control" type="text"
+                                                name="dsDescricao" [disabled]="true">
+                                        </div>
+                                        <div  class="col-lg-3 col-md-3 col-sm-6">
+                                            <h4>Iniciado Em</h4>
+                                            <input value='{{form.dtInicio | date:"dd/MM/yyyy HH:mm" }}' class="form-control" type="text" name="nrRat"
+                                                [disabled]="true">
+                                        </div>
+                                        <div  class="col-lg-3 col-md-3 col-sm-6">
+                                            <h4>Finalizado Em </h4>
+                                            <input value='{{form.dtFim | date:"dd/MM/yyyy HH:mm" }}' class="form-control" type="text" name="dsDescricao"
+                                                [disabled]="true">
+                                        </div>
+                                        <div  class="col-lg-3 col-md-3 col-sm-6">
+                                            <h4>Finalizado Por</h4>
+                                            <input value='{{form.finalizadoPor}}' class="form-control" type="text"
                                                 name="nrRat" [disabled]="true">
                                         </div>
                                     </div>
@@ -250,8 +273,7 @@
                                                     <td><b>{{t.nmUser}}</b></td>
 
                                                     <td class="td-actions text-right">
-                                                        <a rel="tooltip" title="Remove"
-                                                            (click)="removerTecnico(i)"
+                                                        <a rel="tooltip" title="Remove" (click)="removerTecnico(i)"
                                                             class="btn btn-danger btn-fill btn-simple btn-md">
                                                             Deletar
                                                             <i class="fa fa-trash"></i>

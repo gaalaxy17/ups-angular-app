@@ -68,17 +68,21 @@
             <!-- <b style="font-size: 25px;">Nº {{a.cdAtendimento}}</b> -->
             <b style="font-size: 30px;">{{a.hrAtendimento}}</b><br>
             <b style="font-size: 22px;">{{a.dsTipoAtendimento}}</b>
-            <hr>
-
         </div>
+        <hr>
         <div style="color: white" class="content">
             <b>{{a.nmEmpresa}}</b> <br>
             <b>{{a.nmUnidade}}</b> <br>
-            <hr>
+            <br>
             <b>Técnicos:</b> <br>
             <span *ngFor="let t of a.tecnicos">
                 {{t}} <br>
             </span>
+            <br>
+
+            <b>Início:</b> {{a.dtInicio | date:'HH:mm'}}
+            <br>
+            <b>Fim: </b> {{a.dtFim | date:'HH:mm'}}
             <br>
             <!-- <hr> -->
             <div style="text-align: center;">

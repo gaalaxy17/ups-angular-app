@@ -62,8 +62,9 @@ export class ClienteDetalheComponent implements OnInit {
   }
 
   tiposEquipamento = [
-    "GMG", "Nobreak"
+    "GMG", "Nobreak", "Infraestrutura"
   ]
+
 
   tecnicos = [];
 

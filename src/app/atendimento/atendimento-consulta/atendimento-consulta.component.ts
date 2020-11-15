@@ -18,6 +18,7 @@ export class AtendimentoConsultaComponent implements OnInit {
     cdAtendimento: null,
     nmEmpresa: null,
     cdTipoAtendimento: null,
+    dsTipoEquipamento: null,
     dtFiltroDe: null,
     dtFiltroAte: null,
     cdLoginTecnico: null,
@@ -31,6 +32,10 @@ export class AtendimentoConsultaComponent implements OnInit {
   unidades: any = [];
   tiposAtendimento: any = [];
   tecnicos: any = [];
+
+  tiposEquipamento = [
+    "GMG", "Nobreak", "Infraestrutura"
+  ]
 
   private readonly notifier: NotifierService;
 

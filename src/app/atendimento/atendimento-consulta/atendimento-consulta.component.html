@@ -44,7 +44,7 @@
                                         </td>
                                     </tr>
                                     <tr height="50px">
-                                        <td> <label for="company"><b>Tipo</b></label>
+                                        <td> <label for="company"><b>Tipo Atendimento</b></label>
                                         </td>
                                         <td>
                                             <mat-form-field style="width: 100%;">
@@ -53,6 +53,21 @@
                                                     <mat-option *ngFor="let t of tiposAtendimento"
                                                         [value]="t.cdTipoAtendimento">
                                                         {{t.dsTipoAtendimento}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <tr height="50px">
+                                        <td> <label for="company"><b>Tipo Equipamento</b></label>
+                                        </td>
+                                        <td>
+                                            <mat-form-field style="width: 100%;">
+                                                <mat-select 
+                                                    name="dsTipoEquipamento" [(ngModel)]="filtro.dsTipoEquipamento">
+                                                    <mat-option *ngFor="let e of tiposEquipamento"
+                                                        [value]="e">
+                                                        {{e}}
                                                     </mat-option>
                                                 </mat-select>
                                             </mat-form-field>

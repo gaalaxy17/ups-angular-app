@@ -41,7 +41,7 @@ export class ChamadoDetalheComponent implements OnInit {
   }
 
   tiposEquipamento = [
-    "GMG", "Nobreak"
+    "GMG", "Nobreak", "Infraestrutura"
   ]
 
   private readonly notifier: NotifierService;
