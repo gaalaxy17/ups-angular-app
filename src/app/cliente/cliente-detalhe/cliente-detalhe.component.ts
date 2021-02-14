@@ -65,6 +65,14 @@ export class ClienteDetalheComponent implements OnInit {
     "GMG", "Nobreak", "Infraestrutura"
   ]
 
+  tiposPeriodicidade = [
+    {label:"Mensal", value:"mensal"},
+    {label:"Bimestral", value:"bimestral"},
+    {label:"Trimestral", value:"trimestral"},
+    {label:"Semestral", value:"semestral"},
+    {label:"Anual", value:"anual"},
+
+  ]
 
   tecnicos = [];
 
@@ -184,6 +192,7 @@ export class ClienteDetalheComponent implements OnInit {
       nrDuracaoContrato: null,
       nrDiaPrevisto: null,
       tecnicoPrevisto: null,
+      dsTipoPeriodicidade: null,
       fgAtivo: true,
       equipamentos: [],
       uuid: id

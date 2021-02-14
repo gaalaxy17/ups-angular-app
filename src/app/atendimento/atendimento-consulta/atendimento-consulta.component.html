@@ -5,6 +5,16 @@
         opacity: 0.5;
         /*Change the opacity between 0 and 1*/
     }
+
+    .blink_me {
+        animation: blinker 1s linear infinite;
+    }
+
+    @keyframes blinker {
+        50% {
+            opacity: 0;
+        }
+    }
 </style>
 <ngx-spinner color="#ed1c24" type="line-scale" size="medium"></ngx-spinner>
 
@@ -63,10 +73,9 @@
                                         </td>
                                         <td>
                                             <mat-form-field style="width: 100%;">
-                                                <mat-select 
-                                                    name="dsTipoEquipamento" [(ngModel)]="filtro.dsTipoEquipamento">
-                                                    <mat-option *ngFor="let e of tiposEquipamento"
-                                                        [value]="e">
+                                                <mat-select name="dsTipoEquipamento"
+                                                    [(ngModel)]="filtro.dsTipoEquipamento">
+                                                    <mat-option *ngFor="let e of tiposEquipamento" [value]="e">
                                                         {{e}}
                                                     </mat-option>
                                                 </mat-select>
@@ -189,8 +198,10 @@
                                     <th style="padding: 15px; color: white;"></th>
                                     <th style="padding: 15px; color: white;">ID</th>
                                     <th style="padding: 15px; color: white;">RAT</th>
-                                    <th style="padding: 15px; color: white;">Dt. Criação</th>
-                                    <th style="padding: 15px; color: white;">Dt. Atendimento</th>
+                                    <!-- <th style="padding: 15px; color: white;">Dt. Criação</th> -->
+                                    <th></th>
+                                    <th style="padding: 15px; color: white;">Dt. Atend.</th>
+                                    <th style="padding: 15px; color: white;">Hr. Atend.</th>
                                     <th style="padding: 15px; color: white;">Empresa</th>
                                     <th style="padding: 15px; color: white;">Unidade</th>
                                     <th style="padding: 15px; color: white;">Tipo</th>
@@ -206,14 +217,22 @@
                                     <td><input *ngIf="atendimento.stStatus == 'atendimento_pendente_confirmacao'"
                                             type="checkbox" class="checkbox" value=true
                                             [(ngModel)]="atendimento.fgChecked" data-toggle="checkbox"></td>
-                                    <td>{{atendimento.cdAtendimento}}</td>
+                                    <td>{{atendimento.cdAtendimento}} </td>
                                     <td>{{atendimento.nrRat}}</td>
-                                    <td>
+                                    <!-- <td>
                                         <span>{{atendimento.dtCriacao | date:'dd/MM/yyyy' }}</span>
+                                    </td> -->
+                                    <td>
+                                        <i *ngIf="atendimento.fgAtrasado" style="font-size:25px"
+                                            class="pe-7s-attention blink_me"></i>
                                     </td>
                                     <td>
-                                        <span>{{atendimento.dtAtendimento | date:'dd/MM/yyyy HH:mm' }}</span>
+                                        <span>{{atendimento.dtAtendimento | date:'dd/MM/yyyy' }} </span>
                                     </td>
+                                    <td>
+                                        <span>{{atendimento.dtAtendimento | date:'HH:mm' }}</span>
+                                    </td>
+                                   
                                     <td><b>{{atendimento.nmEmpresa}}</b></td>
                                     <td><b>{{atendimento.nmUnidade}}</b></td>
                                     <td>{{atendimento.dsTipoAtendimento}}</td>
